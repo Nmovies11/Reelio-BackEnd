@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "OtG/fo7Wtoksh/S6jzrixUpXi13aZ137ySz53Zb4ehr20DqTjKOXmho9fcx1Kuly97h8zCVAJSAZTml74H/r1w==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\break\\Documents\\School\\Fontys\\Software\\Semester 3\\IP\\Reelio\\Reelio-BackEnd\\Reelio\\API\\API.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\break\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
+    "C:\\Users\\break\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\break\\.nuget\\packages\\swashbuckle.aspnetcore\\6.4.0\\swashbuckle.aspnetcore.6.4.0.nupkg.sha512",
+    "C:\\Users\\break\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.4.0\\swashbuckle.aspnetcore.swagger.6.4.0.nupkg.sha512",
+    "C:\\Users\\break\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.4.0\\swashbuckle.aspnetcore.swaggergen.6.4.0.nupkg.sha512",
+    "C:\\Users\\break\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.4.0\\swashbuckle.aspnetcore.swaggerui.6.4.0.nupkg.sha512"
+  ],
+  "logs": []
+}
