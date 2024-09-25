@@ -24,6 +24,6 @@ jobs:
       run: dotnet restore ./Reelio/Reelio.sln
 
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --no-restore ./Reelio/Reelio.sln
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test --no-build --verbosity normal ./Reelio/Reelio.sln
