@@ -1,0 +1,16 @@
+C:\Users\break\Documents\School\Fontys\Software\Semester 3\IP\Reelio\Reelio-BackEnd\Reelio\DAL\bin\Debug\net8.0\DAL.deps.json
+C:\Users\break\Documents\School\Fontys\Software\Semester 3\IP\Reelio\Reelio-BackEnd\Reelio\DAL\bin\Debug\net8.0\DAL.dll
+C:\Users\break\Documents\School\Fontys\Software\Semester 3\IP\Reelio\Reelio-BackEnd\Reelio\DAL\bin\Debug\net8.0\DAL.pdb
+C:\Users\break\Documents\School\Fontys\Software\Semester 3\IP\Reelio\Reelio-BackEnd\Reelio\DAL\bin\Debug\net8.0\BLL.dll
+C:\Users\break\Documents\School\Fontys\Software\Semester 3\IP\Reelio\Reelio-BackEnd\Reelio\DAL\bin\Debug\net8.0\BLL.pdb
+C:\Users\break\Documents\School\Fontys\Software\Semester 3\IP\Reelio\Reelio-BackEnd\Reelio\DAL\obj\Debug\net8.0\DAL.csproj.AssemblyReference.cache
+C:\Users\break\Documents\School\Fontys\Software\Semester 3\IP\Reelio\Reelio-BackEnd\Reelio\DAL\obj\Debug\net8.0\DAL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\break\Documents\School\Fontys\Software\Semester 3\IP\Reelio\Reelio-BackEnd\Reelio\DAL\obj\Debug\net8.0\DAL.AssemblyInfoInputs.cache
+C:\Users\break\Documents\School\Fontys\Software\Semester 3\IP\Reelio\Reelio-BackEnd\Reelio\DAL\obj\Debug\net8.0\DAL.AssemblyInfo.cs
+C:\Users\break\Documents\School\Fontys\Software\Semester 3\IP\Reelio\Reelio-BackEnd\Reelio\DAL\obj\Debug\net8.0\DAL.csproj.CoreCompileInputs.cache
+C:\Users\break\Documents\School\Fontys\Software\Semester 3\IP\Reelio\Reelio-BackEnd\Reelio\DAL\obj\Debug\net8.0\DAL.sourcelink.json
+C:\Users\break\Documents\School\Fontys\Software\Semester 3\IP\Reelio\Reelio-BackEnd\Reelio\DAL\obj\Debug\net8.0\DAL.csproj.CopyComplete
+C:\Users\break\Documents\School\Fontys\Software\Semester 3\IP\Reelio\Reelio-BackEnd\Reelio\DAL\obj\Debug\net8.0\DAL.dll
+C:\Users\break\Documents\School\Fontys\Software\Semester 3\IP\Reelio\Reelio-BackEnd\Reelio\DAL\obj\Debug\net8.0\refint\DAL.dll
+C:\Users\break\Documents\School\Fontys\Software\Semester 3\IP\Reelio\Reelio-BackEnd\Reelio\DAL\obj\Debug\net8.0\DAL.pdb
+C:\Users\break\Documents\School\Fontys\Software\Semester 3\IP\Reelio\Reelio-BackEnd\Reelio\DAL\obj\Debug\net8.0\ref\DAL.dll
