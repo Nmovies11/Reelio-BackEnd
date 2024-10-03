@@ -9,7 +9,6 @@ namespace BLL.Interfaces.Repositories
 {
     public interface IUserRepository
     {
-
         public Task AddUser(UserDTO user);
     }
 }
