@@ -14,6 +14,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IMovieAPIRepository, MovieAPIRepository>();
+builder.Services.AddScoped<IMovieAPIService, MovieAPIService>();
 
 
 

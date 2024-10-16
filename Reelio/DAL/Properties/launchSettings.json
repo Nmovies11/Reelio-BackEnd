@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "DAL": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "LocalMovieAPI_URL": "https://localhost:7076"
+      }
+    }
+  }
+}

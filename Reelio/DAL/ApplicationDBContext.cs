@@ -5,5 +5,6 @@ public class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
-    public DbSet<UserDTO> Users { get; set; }   
+    public DbSet<UserDTO> Users { get; set; }  
+    public DbSet<MovieDTO> Movies { get; set; }
 }
