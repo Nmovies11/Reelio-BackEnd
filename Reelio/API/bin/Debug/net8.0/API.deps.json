@@ -10,6 +10,7 @@
         "dependencies": {
           "BLL": "1.0.0",
           "DAL": "1.0.0",
+          "DAL.API": "1.0.0",
           "Swashbuckle.AspNetCore": "6.4.0"
         },
         "runtime": {
@@ -666,6 +667,15 @@
         "runtime": {
           "DAL.dll": {}
         }
+      },
+      "DAL.API/1.0.0": {
+        "dependencies": {
+          "BLL": "1.0.0",
+          "DAL": "1.0.0"
+        },
+        "runtime": {
+          "DAL.API.dll": {}
+        }
       }
     }
   },
@@ -1185,6 +1195,11 @@
       "sha512": ""
     },
     "DAL/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "DAL.API/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

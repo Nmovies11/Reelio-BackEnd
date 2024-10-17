@@ -1311,6 +1311,20 @@
         "runtime": {
           "bin/placeholder/DAL.dll": {}
         }
+      },
+      "DAL.API/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "BLL": "1.0.0",
+          "DAL": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/DAL.API.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/DAL.API.dll": {}
+        }
       }
     }
   },
@@ -3667,12 +3681,18 @@
       "type": "project",
       "path": "../DAL/DAL.csproj",
       "msbuildProject": "../DAL/DAL.csproj"
+    },
+    "DAL.API/1.0.0": {
+      "type": "project",
+      "path": "../DAL.API/DAL.API.csproj",
+      "msbuildProject": "../DAL.API/DAL.API.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
       "BLL >= 1.0.0",
       "DAL >= 1.0.0",
+      "DAL.API >= 1.0.0",
       "Swashbuckle.AspNetCore >= 6.4.0"
     ]
   },
@@ -3710,6 +3730,9 @@
           "projectReferences": {
             "C:\\Users\\break\\Documents\\School\\Fontys\\Software\\Semester 3\\IP\\Reelio\\Reelio-BackEnd\\Reelio\\BLL\\BLL.csproj": {
               "projectPath": "C:\\Users\\break\\Documents\\School\\Fontys\\Software\\Semester 3\\IP\\Reelio\\Reelio-BackEnd\\Reelio\\BLL\\BLL.csproj"
+            },
+            "C:\\Users\\break\\Documents\\School\\Fontys\\Software\\Semester 3\\IP\\Reelio\\Reelio-BackEnd\\Reelio\\DAL.API\\DAL.API.csproj": {
+              "projectPath": "C:\\Users\\break\\Documents\\School\\Fontys\\Software\\Semester 3\\IP\\Reelio\\Reelio-BackEnd\\Reelio\\DAL.API\\DAL.API.csproj"
             },
             "C:\\Users\\break\\Documents\\School\\Fontys\\Software\\Semester 3\\IP\\Reelio\\Reelio-BackEnd\\Reelio\\DAL\\DAL.csproj": {
               "projectPath": "C:\\Users\\break\\Documents\\School\\Fontys\\Software\\Semester 3\\IP\\Reelio\\Reelio-BackEnd\\Reelio\\DAL\\DAL.csproj"

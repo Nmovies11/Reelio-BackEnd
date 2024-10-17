@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Interfaces.Services
 {
-    public interface IMovieAPIService
+    public interface IMovieService
     {
         public Task<List<MovieDAO>> GetRecentMovie();
         public Task<MovieDAO> GetMovieById(int id);

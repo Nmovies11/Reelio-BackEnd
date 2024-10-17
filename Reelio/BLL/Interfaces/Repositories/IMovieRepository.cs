@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Interfaces.Repositories
 {
-    public interface IMovieAPIRepository
+    public interface IMovieRepository
     {
         public Task<List<MovieDTO>> GetRecentMovie();
         public Task<MovieDTO> GetMovieById(int id);

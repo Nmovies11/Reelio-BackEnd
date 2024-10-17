@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class MovieAPIService : IMovieAPIService
+    public class MovieService : IMovieService
     {
-        private readonly IMovieAPIRepository movieAPIRepository;
+        private readonly IMovieRepository movieAPIRepository;
 
-        public MovieAPIService(IMovieAPIRepository imovieAPIRepository)
+        public MovieService(IMovieRepository imovieAPIRepository)
         {
             movieAPIRepository = imovieAPIRepository;
         }

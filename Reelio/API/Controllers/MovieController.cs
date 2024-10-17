@@ -7,11 +7,11 @@ namespace API.Controllers
 
     [ApiController]
     [Route("[controller]")]
-    public class MovieApiController : Controller
+    public class MovieController : Controller
     {
 
-        private readonly IMovieAPIService movieService;
-        public MovieApiController(IMovieAPIService _movieService)
+        private readonly IMovieService movieService;
+        public MovieController(IMovieService _movieService)
         {
             movieService = _movieService;
         }

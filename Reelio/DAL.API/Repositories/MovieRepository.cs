@@ -10,11 +10,11 @@ using Microsoft.Extensions.Configuration;
 
 namespace DAL.Repositories
 {
-    public class MovieAPIRepository : IMovieAPIRepository
+    public class MovieRepository : IMovieRepository
     {
         private readonly ApplicationDbContext _context;
         private readonly IConfiguration _configuration;
-        public MovieAPIRepository(ApplicationDbContext context, IConfiguration configuration)
+        public MovieRepository(ApplicationDbContext context, IConfiguration configuration)
         {
             _configuration = configuration;
             _context = context;
