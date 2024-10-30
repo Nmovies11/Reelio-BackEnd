@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Moq;
 using BLL.Interfaces.Repositories;
 using BLL.Services;
-using BLL.Models;
+using BLL.Models.Movie;
 
 namespace ReelioUnitTests
 {

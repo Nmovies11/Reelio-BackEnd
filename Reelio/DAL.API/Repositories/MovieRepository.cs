@@ -5,20 +5,14 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using BLL.Interfaces.Repositories;
-using BLL.Models;
+using BLL.Models.Movie;
 using Microsoft.Extensions.Configuration;
 
-namespace DAL.Repositories
+namespace DAL.API.Repositories
 {
     public class MovieRepository : IMovieRepository
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IConfiguration _configuration;
-        public MovieRepository(ApplicationDbContext context, IConfiguration configuration)
-        {
-            _configuration = configuration;
-            _context = context;
-        }
+
 
         private readonly HttpClient _client = new HttpClient();
 

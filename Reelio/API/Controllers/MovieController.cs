@@ -1,5 +1,5 @@
 ﻿using BLL.Interfaces.Services;
-using BLL.Models;
+using BLL.Models.Movie;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers

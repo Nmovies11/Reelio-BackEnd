@@ -1,7 +1,7 @@
 ﻿using BLL.Helpers;
 using BLL.Interfaces.Repositories;
 using BLL.Interfaces.Services;
-using BLL.Models;
+using BLL.Models.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;

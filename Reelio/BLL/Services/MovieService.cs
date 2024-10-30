@@ -1,6 +1,7 @@
 ﻿using BLL.Interfaces.Repositories;
 using BLL.Interfaces.Services;
-using BLL.Models;
+using BLL.Models.Actor;
+using BLL.Models.Movie;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,13 +35,25 @@ namespace BLL.Services
                     Description = movieDTO.Description,
                     ReleaseDate = movieDTO.ReleaseDate,
                     Director = movieDTO.Director,
-                    ImageUrl = movieDTO.ImageUrl
+                    ImageUrl = movieDTO.ImageUrl,
                 };
 
                 movieDAOs.Add(movieDAO);
             }
 
             return movieDAOs;
+        }
+
+        public List<ActorDAO> ConvertActors(ICollection<ActorDTO> actorDTOs)
+        {
+            return actorDTOs.Select(actorDTO => new ActorDAO
+            {
+                Id = actorDTO.Id,
+                Name = actorDTO.Name,
+                BirthDate = actorDTO.BirthDate,
+                Bio = actorDTO.Bio,
+                ImageUrl = actorDTO.ImageUrl
+            }).ToList();
         }
 
         //get movie by ID
@@ -56,7 +69,8 @@ namespace BLL.Services
                 ReleaseDate = movieDTO.ReleaseDate,
                 Director = movieDTO.Director,
                 ImageUrl = movieDTO.ImageUrl,
-                BackdropUrl = movieDTO.BackdropUrl
+                BackdropUrl = movieDTO.BackdropUrl,
+                Actors = ConvertActors(movieDTO.Actors)
             };
 
             return movieDAO;

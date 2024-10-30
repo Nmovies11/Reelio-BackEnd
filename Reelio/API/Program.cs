@@ -2,7 +2,9 @@ using BLL.Services;
 using BLL.Interfaces.Repositories;
 using BLL.Interfaces.Services;
 using DAL.Repositories;
+using DAL.API.Repositories;
 using Microsoft.EntityFrameworkCore;
+using DAL.API.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,8 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IMovieService, MovieService>();
+builder.Services.AddScoped<IShowRepository, ShowRepository>();
+builder.Services.AddScoped<IShowService, ShowService>();
 
 
 

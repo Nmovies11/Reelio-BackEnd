@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using BLL.Models;
+using BLL.Models.Movie;
+using BLL.Models.User;
 
 public class ApplicationDbContext : DbContext
 {

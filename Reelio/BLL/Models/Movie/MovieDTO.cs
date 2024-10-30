@@ -3,26 +3,29 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace BLL.Models
+namespace BLL.Models.Movie
 {
-    public class MovieDAO
+    public class MovieDTO
     {
-        [Column("id")]
+        [JsonPropertyName("id")]
         public int Id { get; set; }
-        [Column("title")]
+        [JsonPropertyName("title")]
         public string Title { get; set; }
-        [Column("description")]
+        [JsonPropertyName("description")]
         public string Description { get; set; }
-        [Column("release_date")]
+        [JsonPropertyName("release_date")]
         public DateTime ReleaseDate { get; set; }
-        [Column("director")]
+        [JsonPropertyName("director")]
         public string Director { get; set; }
-
-        [Column("poster_url")]
+        [JsonPropertyName("imageUrl")]
         public string ImageUrl { get; set; }
-        [Column("backdrop_url")]
+        [JsonPropertyName("backdropUrl")]
         public string BackdropUrl { get; set; }
+
+        [JsonPropertyName("actors")]
+        public ICollection<Actor.ActorDTO>? Actors { get; set; }
     }
 }

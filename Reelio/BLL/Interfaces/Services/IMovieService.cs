@@ -1,4 +1,4 @@
-﻿using BLL.Models;
+﻿using BLL.Models.Movie;
 using System;
 using System.Collections.Generic;
 using System.Linq;
