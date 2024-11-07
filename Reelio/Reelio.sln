@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReelioUnitTests", "ReelioUn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{16B3854C-10C0-4472-B34B-1DBB3D67C2C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL.API", "DAL.API\DAL.API.csproj", "{A14C16A4-9DB8-4400-8A95-5FB821E557AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL.API", "DAL.API\DAL.API.csproj", "{A14C16A4-9DB8-4400-8A95-5FB821E557AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{AF527B99-6FA6-46FC-9284-502A2335C7D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{A14C16A4-9DB8-4400-8A95-5FB821E557AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A14C16A4-9DB8-4400-8A95-5FB821E557AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A14C16A4-9DB8-4400-8A95-5FB821E557AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF527B99-6FA6-46FC-9284-502A2335C7D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF527B99-6FA6-46FC-9284-502A2335C7D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF527B99-6FA6-46FC-9284-502A2335C7D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF527B99-6FA6-46FC-9284-502A2335C7D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
