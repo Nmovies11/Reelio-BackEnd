@@ -1,7 +1,8 @@
 ﻿using BLL.Helpers;
 using BLL.Interfaces.Repositories;
 using BLL.Interfaces.Services;
-using BLL.Models.User;
+using Common.Entities;
+using Common.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,11 +19,11 @@ namespace BLL.Services
         {
             userRepository = iuserRepository;
         }
-        public async Task RegisterUser(UserDAO user)
+        public async Task RegisterUser(UserDTO user)
         {
 
             user.Password = EncryptionHelper.Encrypt(user.Password);
-            UserDTO userDTO = new UserDTO
+            User userDTO = new User
             {
                 Id = user.Id,
                 Username = user.Username,

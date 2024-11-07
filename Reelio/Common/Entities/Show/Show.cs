@@ -3,25 +3,32 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Common.Entities
 {
     public class Show
     {
-        [Column("id")]
+        [JsonPropertyName("id")]
         public int Id { get; set; }
-        [Column("title")]
+
+        [JsonPropertyName("title")]
         public string Title { get; set; }
-        [Column("description")]
+
+        [JsonPropertyName("description")]
         public string Description { get; set; }
-        [Column("release_date")]
-        public DateTime ReleaseDate { get; set; }
-        [Column("poster_url")]
+
+        [JsonPropertyName("releaseDate")]
+        public DateOnly ReleaseDate { get; set; }
+
+        [JsonPropertyName("imageUrl")]
         public string ImageUrl { get; set; }
-        [Column("backdrop_url")]
+
+        [JsonPropertyName("backdropUrl")]
         public string BackdropUrl { get; set; }
 
+        [JsonPropertyName("seasons")]
         public ICollection<Season>? Seasons { get; set; }
     }
 }

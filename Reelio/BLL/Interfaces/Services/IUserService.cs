@@ -1,4 +1,4 @@
-﻿using BLL.Models.User;
+﻿using Common.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ namespace BLL.Interfaces.Services
 {
     public interface IUserService
     {
-        public Task RegisterUser(UserDAO user);
+        public Task RegisterUser(UserDTO user);
 
     }
 }

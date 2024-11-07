@@ -1,7 +1,6 @@
 ﻿using BLL.Interfaces.Services;
-using BLL.Models.User;
 using Microsoft.AspNetCore.Mvc;
-
+using Common.DTO;
 namespace API.Controllers
 {
     [ApiController]
@@ -22,9 +21,9 @@ namespace API.Controllers
 
 
         [HttpPost("register")]
-        public IActionResult Register([FromBody] UserDAO model)
+        public IActionResult Register([FromBody] UserDTO model)
         {
-            UserDAO user = new UserDAO
+            UserDTO user = new UserDTO
             {
                 Id = model.Id,
                 Username = model.Username,

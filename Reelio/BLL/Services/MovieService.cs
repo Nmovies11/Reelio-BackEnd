@@ -1,7 +1,7 @@
 ﻿using BLL.Interfaces.Repositories;
 using BLL.Interfaces.Services;
-using BLL.Models.Actor;
-using BLL.Models.Movie;
+using Common.DTO;
+using Common.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,57 +20,59 @@ namespace BLL.Services
         }
 
         //get recent movie
-        public async Task<List<MovieDAO>> GetRecentMovie()
+        public async Task<List<MovieDTO>> GetRecentMovie()
         {
-            List<MovieDTO> movieDTOs = await movieAPIRepository.GetRecentMovie();
+            List<Movie> movieEntities  = await movieAPIRepository.GetRecentMovie();
 
-            List<MovieDAO> movieDAOs = new List<MovieDAO>();
+            List<MovieDTO> movieDTOs = new List<MovieDTO>();
 
-            foreach (var movieDTO in movieDTOs)
+            foreach (var movieEntity in movieEntities )
             {
-                MovieDAO movieDAO = new MovieDAO
+                MovieDTO movieDAO = new MovieDTO
                 {
-                    Id = movieDTO.Id,
-                    Title = movieDTO.Title,
-                    Description = movieDTO.Description,
-                    ReleaseDate = movieDTO.ReleaseDate,
-                    Director = movieDTO.Director,
-                    ImageUrl = movieDTO.ImageUrl,
+                    Id = movieEntity.Id,
+                    Title = movieEntity.Title,
+                    ReleaseDate = movieEntity.ReleaseDate,
+                    Director = movieEntity.Director,
+                    ImageUrl = movieEntity.ImageUrl,
                 };
 
-                movieDAOs.Add(movieDAO);
+                movieDTOs.Add(movieDAO);
             }
 
-            return movieDAOs;
+            return movieDTOs;
         }
 
-        public List<ActorDAO> ConvertActors(ICollection<ActorDTO> actorDTOs)
+        public List<ActorDTO> ConvertActors(ICollection<Actor> actorDTOs)
         {
-            return actorDTOs.Select(actorDTO => new ActorDAO
+            if (actorDTOs == null)
+            {
+                return new List<ActorDTO>(); // or return an empty list as fallback
+            }
+
+            return actorDTOs.Select(actorDTO => new ActorDTO
             {
                 Id = actorDTO.Id,
                 Name = actorDTO.Name,
-                BirthDate = actorDTO.BirthDate,
-                Bio = actorDTO.Bio,
                 ImageUrl = actorDTO.ImageUrl
             }).ToList();
         }
 
         //get movie by ID
-        public async Task<MovieDAO> GetMovieById(int id)
+        public async Task<MovieDTODetails> GetMovieById(int id)
         {
-            MovieDTO movieDTO = await movieAPIRepository.GetMovieById(id);
+            Movie MovieEntity = await movieAPIRepository.GetMovieById(id);
 
-            MovieDAO movieDAO = new MovieDAO
+            MovieDTODetails movieDAO = new MovieDTODetails
             {
-                Id = movieDTO.Id,
-                Title = movieDTO.Title,
-                Description = movieDTO.Description,
-                ReleaseDate = movieDTO.ReleaseDate,
-                Director = movieDTO.Director,
-                ImageUrl = movieDTO.ImageUrl,
-                BackdropUrl = movieDTO.BackdropUrl,
-                Actors = ConvertActors(movieDTO.Actors)
+                Id = MovieEntity.Id,
+                Title = MovieEntity.Title,
+                Description = MovieEntity.Description,
+                ReleaseDate = MovieEntity.ReleaseDate,
+                Director = MovieEntity.Director,
+                ImageUrl = MovieEntity.ImageUrl,
+                BackdropUrl = MovieEntity.BackdropUrl,
+                Actors = ConvertActors(MovieEntity.Actors)
             };
 
             return movieDAO;

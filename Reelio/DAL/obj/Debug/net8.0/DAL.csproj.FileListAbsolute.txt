@@ -14,3 +14,5 @@ C:\Users\break\Documents\School\Fontys\Software\Semester 3\IP\Reelio\Reelio-Back
 C:\Users\break\Documents\School\Fontys\Software\Semester 3\IP\Reelio\Reelio-BackEnd\Reelio\DAL\obj\Debug\net8.0\refint\DAL.dll
 C:\Users\break\Documents\School\Fontys\Software\Semester 3\IP\Reelio\Reelio-BackEnd\Reelio\DAL\obj\Debug\net8.0\DAL.pdb
 C:\Users\break\Documents\School\Fontys\Software\Semester 3\IP\Reelio\Reelio-BackEnd\Reelio\DAL\obj\Debug\net8.0\ref\DAL.dll
+C:\Users\break\Documents\School\Fontys\Software\Semester 3\IP\Reelio\Reelio-BackEnd\Reelio\DAL\bin\Debug\net8.0\Common.dll
+C:\Users\break\Documents\School\Fontys\Software\Semester 3\IP\Reelio\Reelio-BackEnd\Reelio\DAL\bin\Debug\net8.0\Common.pdb

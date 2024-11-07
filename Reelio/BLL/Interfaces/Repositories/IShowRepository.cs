@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BLL.Models.Show;
-
+using Common.Entities;
 namespace BLL.Interfaces.Repositories
 {
     public interface IShowRepository
     {
-        public Task<List<ShowDTO>> GetRecentShows();
-        public Task<ShowDTO> GetShowById(int id);
+        public Task<List<Show>> GetRecentShows();
+        public Task<Show> GetShowById(int id);
     }
 }

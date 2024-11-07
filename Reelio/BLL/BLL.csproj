@@ -13,8 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Episode\" />
-    <Folder Include="Models\Season\" />
+    <ProjectReference Include="..\Common\Common.csproj" />
   </ItemGroup>
 
 </Project>

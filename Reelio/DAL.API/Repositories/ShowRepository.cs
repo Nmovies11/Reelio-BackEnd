@@ -1,6 +1,6 @@
 ﻿using BLL.Interfaces.Repositories;
-using BLL.Models.Movie;
-using BLL.Models.Show;
+using Common.DTO;
+using Common.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +15,7 @@ namespace DAL.API.Repositories
     {
         private readonly HttpClient _client = new HttpClient();
 
-        public async Task<List<ShowDTO>> GetRecentShows()
+        public async Task<List<Show>> GetRecentShows()
         {
             Uri url = new Uri("https://localhost:7076/show/recentshows");
             var response = await _client.GetAsync(url);
@@ -23,20 +23,20 @@ namespace DAL.API.Repositories
             Console.WriteLine(content);
 
 
-            var shows = JsonSerializer.Deserialize<List<ShowDTO>>(content);
+            var shows = JsonSerializer.Deserialize<List<Show>>(content);
 
             return shows;
 
         }
 
-        public async Task<ShowDTO> GetShowById(int id)
+        public async Task<Show> GetShowById(int id)
         {
             Uri url = new Uri("https://localhost:7076/show/" + id);
             var response = await _client.GetAsync(url);
             var content = await response.Content.ReadAsStringAsync();
             Console.WriteLine(content);
 
-            var show = JsonSerializer.Deserialize<ShowDTO>(content);
+            var show = JsonSerializer.Deserialize<Show>(content);
 
             return show;
         }

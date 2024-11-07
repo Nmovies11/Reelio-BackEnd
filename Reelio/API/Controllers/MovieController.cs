@@ -1,5 +1,5 @@
 ﻿using BLL.Interfaces.Services;
-using BLL.Models.Movie;
+using Common.DTO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -17,13 +17,13 @@ namespace API.Controllers
         }
 
         [HttpGet("recentmovies")]
-        public async Task<List<MovieDAO>> GetRecentMovie()
+        public async Task<List<MovieDTO>> GetRecentMovie()
         {
             return await movieService.GetRecentMovie();
         }
 
         [HttpGet("{id}")]
-        public async Task<MovieDAO> GetMovieById(int id)
+        public async Task<MovieDTODetails> GetMovieById(int id)
         {
             return await movieService.GetMovieById(id);
         }

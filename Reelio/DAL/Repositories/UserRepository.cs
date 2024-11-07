@@ -1,11 +1,12 @@
 ﻿using BLL.Interfaces.Repositories;
-using BLL.Models.User;
+using Common.DTO;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Common.Entities;
 
 namespace DAL.Repositories
 {
@@ -16,7 +17,7 @@ namespace DAL.Repositories
         {
             _context = context;
         }
-        public Task AddUser(UserDTO user)
+        public Task AddUser(User user)
         {
                  _context.Users.Add(user);
                  _context.SaveChanges();

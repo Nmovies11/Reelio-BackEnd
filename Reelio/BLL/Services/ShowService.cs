@@ -5,7 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using BLL.Interfaces.Repositories;
 using BLL.Interfaces.Services;
-using BLL.Models.Show;
+using Common.DTO;
+using Common.Entities;
 
 namespace BLL.Services
 {
@@ -17,15 +18,15 @@ namespace BLL.Services
             _showRepository = showRepository;
         }
 
-        public async Task<List<ShowDAO>> GetRecentShows()
+        public async Task<List<ShowDTO>> GetRecentShows()
         {
 
-            var shows = await _showRepository.GetRecentShows();
+            var showEntities = await _showRepository.GetRecentShows();
 
-            List<ShowDAO> showDAOs = new List<ShowDAO>();
-            foreach (var show in shows)
+            List<ShowDTO> showDAOs = new List<ShowDTO>();
+            foreach (var show in showEntities)
             {
-                ShowDAO showDAO = new ShowDAO
+                ShowDTO showDAO = new ShowDTO
                 {
                     Id = show.Id,
                     Title = show.Title,
@@ -39,17 +40,34 @@ namespace BLL.Services
             return showDAOs;
         }
 
-        public async Task<ShowDAO> GetShowById(int id)
+        public async Task<ShowDTO> GetShowById(int id)
         {
-            var show = await _showRepository.GetShowById(id);
-            ShowDAO showDAO = new ShowDAO
+            var showEntity = await _showRepository.GetShowById(id);
+            ShowDTO showDAO = new ShowDTO
             {
-                Id = show.Id,
-                Title = show.Title,
-                Description = show.Description,
-                ReleaseDate = show.ReleaseDate,
-                ImageUrl = show.ImageUrl,
-                BackdropUrl = show.BackdropUrl,
+                Id = showEntity.Id,
+                Title = showEntity.Title,
+                Description = showEntity.Description,
+                ReleaseDate = showEntity.ReleaseDate,
+                ImageUrl = showEntity.ImageUrl,
+                BackdropUrl = showEntity.BackdropUrl,
+                Seasons = showEntity.Seasons.Select(season => new SeasonDTO
+                {
+                    Id = season.Id,
+                    SeasonNumber = season.SeasonNumber,
+                    Description = season.Description,
+                    ReleaseDate = season.ReleaseDate,
+                    ShowId = season.ShowId,
+                    Episodes = season.Episodes.Select(episode => new EpisodeDTO
+                    {
+                        Id = episode.Id,
+                        Title = episode.Title,
+                        Description = episode.Description,
+                        ReleaseDate = episode.ReleaseDate,
+                        Director = episode.Director,
+                        EpisodeNumber = episode.EpisodeNumber
+                    }).ToList()
+                }).ToList()
             };
             return showDAO;
         }

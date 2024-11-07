@@ -9,6 +9,7 @@
       "DAL/1.0.0": {
         "dependencies": {
           "BLL": "1.0.0",
+          "Common": "1.0.0",
           "Microsoft.EntityFrameworkCore": "8.0.8",
           "Microsoft.EntityFrameworkCore.SqlServer": "8.0.8",
           "Microsoft.Extensions.Configuration.UserSecrets": "6.0.1",
@@ -701,12 +702,18 @@
       },
       "BLL/1.0.0": {
         "dependencies": {
+          "Common": "1.0.0",
           "Konscious.Security.Cryptography.Argon2": "1.3.1",
           "Microsoft.EntityFrameworkCore": "8.0.8",
           "Microsoft.EntityFrameworkCore.SqlServer": "8.0.8"
         },
         "runtime": {
           "BLL.dll": {}
+        }
+      },
+      "Common/1.0.0": {
+        "runtime": {
+          "Common.dll": {}
         }
       }
     }
@@ -1180,6 +1187,11 @@
       "hashPath": "system.windows.extensions.6.0.0.nupkg.sha512"
     },
     "BLL/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Common/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

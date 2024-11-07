@@ -3,26 +3,35 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Common.Entities
 {
     public class Episode
     {
-        [Column("id")]
+        [JsonPropertyName("id")]
         public int Id { get; set; }
-        [Column("season_id")]
+
+        [JsonPropertyName("season_id")]
         public int SeasonId { get; set; }
+
+        [JsonIgnore]
         public Season Season { get; set; }
-        [Column("episode_number")]
+
+        [JsonPropertyName("episode_number")]
         public int EpisodeNumber { get; set; }
-        [Column("title")]
+
+        [JsonPropertyName("title")]
         public string Title { get; set; }
-        [Column("description")]
+
+        [JsonPropertyName("description")]
         public string Description { get; set; }
-        [Column("release_date")]
-        public DateTime ReleaseDate { get; set; }
-        [Column("director")]
+
+        [JsonPropertyName("release_date")]
+        public DateOnly ReleaseDate { get; set; }
+
+        [JsonPropertyName("director")]
         public string Director { get; set; }
     }
 }

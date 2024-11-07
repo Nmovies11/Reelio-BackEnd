@@ -1,5 +1,5 @@
 ﻿using BLL.Interfaces.Services;
-using BLL.Models.Show;
+using Common.DTO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -15,13 +15,13 @@ namespace API.Controllers
         }
 
         [HttpGet("recentshows")]
-        public async Task<List<ShowDAO>> GetRecentShows()
+        public async Task<List<ShowDTO>> GetRecentShows()
         {
             return await showService.GetRecentShows();
         }
 
         [HttpGet("{id}")]
-        public async Task<ShowDAO> GetShowById(int id)
+        public async Task<ShowDTO> GetShowById(int id)
         {
             return await showService.GetShowById(id);
         }

@@ -3,21 +3,22 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Common.Entities
 {
     public class Actor
     {
-        [Column("id")]
+        [JsonPropertyName("id")]
         public int Id { get; set; }
-        [Column("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
-        [Column("birthdate")]
+        [JsonPropertyName("birthdate")]
         public DateTime BirthDate { get; set; }
-        [Column("biography")]
+        [JsonPropertyName("biography")]
         public string Bio { get; set; }
-        [Column("image_url")]
+        [JsonPropertyName("imageUrl")]
         public string ImageUrl { get; set; }
 
         public ICollection<Movie>? Movies { get; set; }

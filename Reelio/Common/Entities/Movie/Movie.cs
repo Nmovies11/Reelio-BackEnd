@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,23 +9,22 @@ namespace Common.Entities
 {
     public class Movie
     {
-        [Column("id")]
+        [JsonPropertyName("id")]
         public int Id { get; set; }
-        [Column("title")]
+        [JsonPropertyName("title")]
         public string Title { get; set; }
-        [Column("description")]
+        [JsonPropertyName("description")]
         public string Description { get; set; }
-        [Column("release_date")]
+        [JsonPropertyName("releaseDate")]
         public DateOnly ReleaseDate { get; set; }
-        [Column("director")]
+        [JsonPropertyName("director")]
         public string Director { get; set; }
-
-        [Column("poster_url")]
+        [JsonPropertyName("imageUrl")]
         public string ImageUrl { get; set; }
-        [Column("backdrop_url")]
+        [JsonPropertyName("backdropUrl")]
         public string BackdropUrl { get; set; }
-        [Column("runtime")]
-        public int Runtime { get; set; }
+
+        [JsonPropertyName("actors")]
         public ICollection<Actor>? Actors { get; set; }
 
     }

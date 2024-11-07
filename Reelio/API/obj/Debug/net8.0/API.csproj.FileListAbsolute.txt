@@ -79,3 +79,5 @@ C:\Users\break\Documents\School\Fontys\Software\Semester 3\IP\Reelio\Reelio-Back
 C:\Users\break\Documents\School\Fontys\Software\Semester 3\IP\Reelio\Reelio-BackEnd\Reelio\API\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
 C:\Users\break\Documents\School\Fontys\Software\Semester 3\IP\Reelio\Reelio-BackEnd\Reelio\API\bin\Debug\net8.0\DAL.API.dll
 C:\Users\break\Documents\School\Fontys\Software\Semester 3\IP\Reelio\Reelio-BackEnd\Reelio\API\bin\Debug\net8.0\DAL.API.pdb
+C:\Users\break\Documents\School\Fontys\Software\Semester 3\IP\Reelio\Reelio-BackEnd\Reelio\API\bin\Debug\net8.0\Common.dll
+C:\Users\break\Documents\School\Fontys\Software\Semester 3\IP\Reelio\Reelio-BackEnd\Reelio\API\bin\Debug\net8.0\Common.pdb

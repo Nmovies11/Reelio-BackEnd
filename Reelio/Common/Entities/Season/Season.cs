@@ -3,31 +3,44 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Common.Entities
 {
     public class Season
     {
-        [Column("id")]
+        [JsonPropertyName("id")]
         public int Id { get; set; }
-        [Column("show_id")]
-        public int ShowId;
+
+        [JsonPropertyName("showId")]
+        public int ShowId { get; set; }
+
+        [JsonIgnore] 
         public Show Show { get; set; }
-        [Column("season_number")]
+
+        [JsonPropertyName("seasonNumber")]
         public int SeasonNumber { get; set; }
-        [Column("season_name")]
+
+        [JsonPropertyName("season_name")]   
         public string SeasonName { get; set; }
-        [Column("episode_count")]
+
+        [JsonPropertyName("episode_count")]
         public int EpisodeCount { get; set; }
-        [Column("release_date")]
-        public DateTime ReleaseDate { get; set; }
-        [Column("description")]
+
+        [JsonPropertyName("releaseDate")]
+        public DateOnly ReleaseDate { get; set; }
+
+        [JsonPropertyName("description")]
         public string Description { get; set; }
-        [Column("poster_url")]
+
+        [JsonPropertyName("poster_url")]
         public string ImageUrl { get; set; }
 
-        public required ICollection<Episode> Episodes { get; set; }
+        // Navigational property for episodes (should be serialized as a list of EpisodeDTOs)
+        [JsonPropertyName("episodes")]
+        public ICollection<Episode> Episodes { get; set; }
+
 
 
     }

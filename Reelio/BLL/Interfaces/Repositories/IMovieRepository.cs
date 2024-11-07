@@ -1,16 +1,17 @@
-﻿using BLL.Models.Movie;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Common.Entities;
+
 
 namespace BLL.Interfaces.Repositories
 {
     public interface IMovieRepository
     {
-        public Task<List<MovieDTO>> GetRecentMovie();
-        public Task<MovieDTO> GetMovieById(int id);
+        public Task<List<Movie>> GetRecentMovie();
+        public Task<Movie> GetMovieById(int id);
 
     }
 }

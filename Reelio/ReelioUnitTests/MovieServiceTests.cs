@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 using Moq;
 using BLL.Interfaces.Repositories;
 using BLL.Services;
-using BLL.Models.Movie;
+using Common.DTO;
+using Common.Entities;
 
 namespace ReelioUnitTests
 {
@@ -26,23 +27,19 @@ namespace ReelioUnitTests
         [TestMethod]
         public async Task GetRecentMovie_ShouldReturnListOfMovies_WhenMoviesExist()
         {
-            var movieDTOs = new List<MovieDTO>
+            var movieDTOs = new List<Movie>
             {
-                new MovieDTO
+                new Movie
                 {
                     Id = 1,
                     Title = "Movie 1",
-                    Description = "Description 1",
-                    ReleaseDate = DateTime.Now,
                     Director = "Director 1",
                     ImageUrl = "Image URL 1"
                 },
-                new MovieDTO
+                new Movie
                 {
                     Id = 2,
                     Title = "Movie 2",
-                    Description = "Description 2",
-                    ReleaseDate = DateTime.Now,
                     Director = "Director 2",
                     ImageUrl = "Image URL 2"
                 }
@@ -62,12 +59,12 @@ namespace ReelioUnitTests
         [TestMethod]
         public async Task GetMovieById_ShouldReturnMovie_WhenMovieExists()
         {
-            var movieDTO = new MovieDTO
+            var movieDTO = new Movie
             {
                 Id = 1,
                 Title = "Movie 1",
                 Description = "Description 1",
-                ReleaseDate = DateTime.Now,
+                ReleaseDate = DateOnly.FromDateTime(DateTime.Now),
                 Director = "Director 1",
                 ImageUrl = "Image URL 1",
                 BackdropUrl = "Backdrop URL 1"

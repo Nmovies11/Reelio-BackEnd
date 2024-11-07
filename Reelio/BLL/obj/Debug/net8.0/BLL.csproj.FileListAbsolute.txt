@@ -11,3 +11,6 @@ C:\Users\break\Documents\School\Fontys\Software\Semester 3\IP\Reelio\Reelio-Back
 C:\Users\break\Documents\School\Fontys\Software\Semester 3\IP\Reelio\Reelio-BackEnd\Reelio\BLL\obj\Debug\net8.0\refint\BLL.dll
 C:\Users\break\Documents\School\Fontys\Software\Semester 3\IP\Reelio\Reelio-BackEnd\Reelio\BLL\obj\Debug\net8.0\BLL.pdb
 C:\Users\break\Documents\School\Fontys\Software\Semester 3\IP\Reelio\Reelio-BackEnd\Reelio\BLL\obj\Debug\net8.0\ref\BLL.dll
+C:\Users\break\Documents\School\Fontys\Software\Semester 3\IP\Reelio\Reelio-BackEnd\Reelio\BLL\bin\Debug\net8.0\Common.dll
+C:\Users\break\Documents\School\Fontys\Software\Semester 3\IP\Reelio\Reelio-BackEnd\Reelio\BLL\bin\Debug\net8.0\Common.pdb
+C:\Users\break\Documents\School\Fontys\Software\Semester 3\IP\Reelio\Reelio-BackEnd\Reelio\BLL\obj\Debug\net8.0\BLL.csproj.CopyComplete
