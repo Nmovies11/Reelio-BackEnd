@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Common.DTO.Actor
+namespace Common.DTO
 {
     public class ActorDTO
     {
+        public int Id { get; set; }
+        public string ImageUrl { get; set; }
+        public string Name { get; set; }
     }
 }
