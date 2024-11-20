@@ -4,7 +4,7 @@ using BLL.Interfaces.Services;
 using DAL.Repositories;
 using DAL.API.Repositories;
 using Microsoft.EntityFrameworkCore;
-using DAL.API.Repositories;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,10 +22,14 @@ builder.Services.AddScoped<IShowRepository, ShowRepository>();
 builder.Services.AddScoped<IShowService, ShowService>();
 
 
-
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
-                     ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))));
+{
+    options.UseMySql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
+    );
+});
+
 
 builder.Services.AddCors(options =>
 {

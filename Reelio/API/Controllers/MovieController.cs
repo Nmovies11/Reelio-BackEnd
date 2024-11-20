@@ -6,7 +6,7 @@ namespace API.Controllers
 {
 
     [ApiController]
-    [Route("[controller]")]
+    [Route("movie")]
     public class MovieController : Controller
     {
 

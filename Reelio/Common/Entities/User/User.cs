@@ -10,10 +10,12 @@ namespace Common.Entities
     [Table("users")]
     public class User
     {
-            public int Id { get; set; }
-            [Column("user_name")]
-            public string Username { get; set; }
-            public string Email { get; set; }
-            public string Password { get; set; }
+        public Guid Id { get; set; }
+        [Column("user_name")]
+        public string Username { get; set; }
+        [Column("email")]
+        public string Email { get; set; }
+        [Column("password")]
+        public string Password { get; set; }
         }
 }

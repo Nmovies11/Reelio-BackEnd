@@ -4,7 +4,7 @@ using Common.DTO;
 namespace API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("user")]
     public class UserController : Controller
     {
         private readonly IUserService userService;

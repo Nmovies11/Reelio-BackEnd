@@ -23,9 +23,11 @@ namespace BLL.Services
         {
 
             user.Password = EncryptionHelper.Encrypt(user.Password);
+            Guid newUserId = Guid.NewGuid();
+
             User userDTO = new User
             {
-                Id = user.Id,
+                Id = newUserId,
                 Username = user.Username,
                 Email = user.Email,
                 Password = user.Password
@@ -33,5 +35,9 @@ namespace BLL.Services
 
             await userRepository.AddUser(userDTO);
         }
+
+
+
+
     }
 }

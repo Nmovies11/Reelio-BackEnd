@@ -39,6 +39,11 @@ namespace DAL.API.Repositories
 
             var movie = JsonSerializer.Deserialize<Movie>(content);
 
+            if (movie == null)
+            {
+                throw new InvalidOperationException("Failed to deserialize movie.");
+            }
+
             return movie;
         }
     }
