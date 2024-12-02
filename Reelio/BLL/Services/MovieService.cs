@@ -54,7 +54,8 @@ namespace BLL.Services
             {
                 Id = actorDTO.Id,
                 Name = actorDTO.Name,
-                ImageUrl = actorDTO.ImageUrl
+                ImageUrl = actorDTO.ImageUrl,
+                Role = actorDTO.Role
             }).ToList();
         }
 

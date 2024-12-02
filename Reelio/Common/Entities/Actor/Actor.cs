@@ -20,7 +20,12 @@ namespace Common.Entities
         public string Bio { get; set; }
         [JsonPropertyName("imageUrl")]
         public string ImageUrl { get; set; }
+        [JsonPropertyName("role")]
+        public string Role { get; set; }
+
 
         public ICollection<Movie>? Movies { get; set; }
+
+
     }
 }

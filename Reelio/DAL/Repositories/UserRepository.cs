@@ -20,5 +20,10 @@ namespace DAL.Repositories
             return Task.CompletedTask;
         }
 
+        public Task<User> GetUserByEmail(string email)
+        {
+            return _context.Users.FirstOrDefaultAsync(x => x.Email == email);
+        }
+
     }
 }
