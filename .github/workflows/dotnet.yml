@@ -57,7 +57,7 @@ jobs:
         with:
           context: ./Reelio
           push: true
-          tags:   reeliocr.azurecr.io/reelio-backend:${{ github.sha }}
+          tags:   reeliocr.azurecr.io/reelio-api:${{ github.sha }}
           file: ./Reelio/Dockerfile
 
   deploy_to_azure:
@@ -68,7 +68,7 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
-      - name: Deploy to Azure Web App
+      - name: Deploy to Azure Web App   
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
