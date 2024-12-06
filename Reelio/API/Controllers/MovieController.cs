@@ -24,12 +24,12 @@ namespace API.Controllers
             return await movieService.GetRecentMovie();
         }
 
-        [HttpGet("TestingAzureContainer")]
+        [HttpGet("TestingAzureContainerV2")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MovieDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<String> TestInfo()
+        public async Task<string> TestInfo()
         {
-            return "Yo";
+            return "Yo will this please work";
         }
 
 
