@@ -57,7 +57,7 @@ jobs:
         with:
           context: ./Reelio
           push: true
-          tags:   reeliocr.azurecr.io/reelio-api:${{ github.sha }}
+          tags:   reeliocr.azurecr.io/reelio-backend:${{ github.sha }}
           file: ./Reelio/Dockerfile
 
   deploy_to_azure:
