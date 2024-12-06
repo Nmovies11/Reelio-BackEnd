@@ -8,12 +8,13 @@ namespace API.Middleware
     {
         private readonly RequestDelegate _next;
         private readonly IServiceScopeFactory _scopeFactory;
+        private readonly ILogger<AuthenticationMiddleware> _logger;
 
         private static readonly HashSet<string> ExcludedPaths = new(StringComparer.OrdinalIgnoreCase)
-            {
-                 "/v3/api-docs", "/login", "/register"
-            };
-        private static readonly string[] ExcludedPrefixes = { "/external", "/movie", "/show", "/swagger", };
+        {
+            "/v3/api-docs", "/login", "/register"
+        };
+        private static readonly string[] ExcludedPrefixes = { "/external", "/movie", "/show", "/swagger", "/environments" };
 
         private bool IsExcludedPath(string path)
         {
@@ -28,49 +29,60 @@ namespace API.Middleware
             return false;
         }
 
-        public AuthenticationMiddleware(RequestDelegate next, IServiceScopeFactory scopeFactory)
+        public AuthenticationMiddleware(RequestDelegate next, IServiceScopeFactory scopeFactory, ILogger<AuthenticationMiddleware> logger)
         {
             _next = next;
             _scopeFactory = scopeFactory;
+            _logger = logger;
         }
+
         public async Task Invoke(HttpContext context)
         {
             var path = context.Request.Path.Value?.TrimEnd('/').ToLower() ?? "";
             if (IsExcludedPath(path))
             {
-                await _next(context); 
+                await _next(context);
                 return;
             }
 
-
-            // Create a scope to resolve the UserService
-            using (var scope = _scopeFactory.CreateScope())
+            try
             {
-                var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
-
-                var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-                if(token == null || token == "null")
+                // Create a scope to resolve the UserService
+                using (var scope = _scopeFactory.CreateScope())
                 {
-                    RejectRequest(context);
-                    return;
+                    var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
+
+                    var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+                    if (string.IsNullOrEmpty(token) || token == "null")
+                    {
+                        RejectRequest(context);
+                        return;
+                    }
+
+                    var user = userService.ValidateToken(token);
+
+                    if (IsProtectedResource(context) && user == null)
+                    {
+                        RejectRequest(context);
+                        return;
+                    }
+
+                    context.Items["User"] = user;
+
+                    if (IsProtectedResource(context))
+                    {
+                        await _next(context);
+                    }
                 }
-                var user = userService.ValidateToken(token);
-
-                if (IsProtectedResource(context) && user == null)
-                {
-                    RejectRequest(context);
-                    return;
-                }
-
-                context.Items["User"] = user;
-
-                if (IsProtectedResource(context))
-                {
-                    await _next(context);
-                }
-
+            }
+            catch (Exception ex)
+            {
+                // Log any exceptions that occur during authentication
+                _logger.LogError(ex, "An error occurred while processing the authentication middleware.");
+                RejectRequest(context);
             }
         }
+
         private void RejectRequest(HttpContext context)
         {
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;

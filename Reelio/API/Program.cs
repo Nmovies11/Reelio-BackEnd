@@ -4,9 +4,12 @@ using BLL.Interfaces.Services;
 using DAL.Repositories;
 using DAL.API.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System;
-using BLL.Helpers;
 using API.Middleware;
+using Azure.Identity;
+using Azure.Extensions.AspNetCore.Configuration.Secrets;
+using Azure.Security.KeyVault.Secrets;
+using System;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -21,18 +24,79 @@ builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IMovieService, MovieService>();
 builder.Services.AddScoped<IShowRepository, ShowRepository>();
 builder.Services.AddScoped<IShowService, ShowService>();
-builder.Services.AddSingleton<InfisicalHelper>();
 
-
-
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+if (builder.Environment.IsProduction())
 {
-    options.UseMySql(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
-        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
-    );
-});
+    var keyVaultURL = builder.Configuration.GetValue<string>("KeyVault:KeyvaultURL");
+    var credential = new ManagedIdentityCredential();
 
+    var secretClient = new SecretClient(new Uri(keyVaultURL), credential);
+
+    builder.Configuration.AddAzureKeyVault(secretClient, new AzureKeyVaultConfigurationOptions());
+
+    var connectionString = builder.Configuration["DatabaseURLProd"];
+
+    if (string.IsNullOrEmpty(connectionString))
+    {
+        throw new InvalidOperationException("Database connection string 'DatabaseURLProd' is missing.");
+    }
+
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    {
+        options.UseMySql(
+            connectionString,
+            new MySqlServerVersion(new Version(8, 0, 39)),
+            mysqlOptions => mysqlOptions.EnableRetryOnFailure(
+            maxRetryCount: 5,        
+            maxRetryDelay: TimeSpan.FromSeconds(10), 
+            errorNumbersToAdd: null  
+        )
+
+        );
+    });
+}
+
+if(builder.Environment.IsStaging())
+{
+    var keyVaultURL = builder.Configuration.GetValue<string>("KeyVault:KeyvaultURL");
+    var credential = new ManagedIdentityCredential();
+
+    var secretClient = new SecretClient(new Uri(keyVaultURL), credential);
+
+    builder.Configuration.AddAzureKeyVault(secretClient, new AzureKeyVaultConfigurationOptions());
+
+    var connectionString = builder.Configuration["DatabaseURLStaging"];
+
+    if (string.IsNullOrEmpty(connectionString))
+    {
+        throw new InvalidOperationException("Database connection string 'DatabaseURLStaging' is missing.");
+    }
+
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    {
+        options.UseMySql(
+            connectionString,
+            new MySqlServerVersion(new Version(8, 0, 39)),
+            mysqlOptions => mysqlOptions.EnableRetryOnFailure(
+            maxRetryCount: 5,
+            maxRetryDelay: TimeSpan.FromSeconds(10),
+            errorNumbersToAdd: null
+        ));
+    });
+}
+
+
+
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    {
+        options.UseMySql(
+            builder.Configuration.GetConnectionString("DefaultConnection"),
+            ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
+        );
+    });
+}
 
 builder.Services.AddCors(options =>
 {
@@ -48,10 +112,6 @@ builder.Services.AddCors(options =>
 
 
 
-builder.Services.AddControllers();
-
-
-
 var app = builder.Build();
 app.UseCors();
 
@@ -59,12 +119,11 @@ app.UseMiddleware<AuthenticationMiddleware>();
 
 
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+
+
 
 
 app.UseHttpsRedirection();

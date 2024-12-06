@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Common.Entities
 {
+    [NotMapped]
     public class Actor
     {
         [JsonPropertyName("id")]

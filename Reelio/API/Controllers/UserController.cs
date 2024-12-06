@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity.Data;
 namespace API.Controllers
 {
     [ApiController]
-    [Route("user")]
+    [Route("users")]
     public class UserController : Controller
     {
         private readonly IUserService userService;
@@ -15,14 +15,7 @@ namespace API.Controllers
         {
             userService = _userService;
         }
-        // GET: UserController
-        [HttpGet]
-        public ActionResult Index()
-        {
-            return View();
-        }
 
-        // GET: account
         [HttpGet]
         [Route("/account")]
         public UserJWTDTO? GetAccount()
@@ -31,6 +24,8 @@ namespace API.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [Route("/login")]
         public async Task<IActionResult> Login([FromBody] LoginDTO body)
         {
@@ -52,6 +47,8 @@ namespace API.Controllers
 
 
         [HttpPost("/register")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> Register([FromBody] UserDTO model)
         {
             UserDTO userDTO = new UserDTO
@@ -79,5 +76,7 @@ namespace API.Controllers
                 token
             });
         }
+
+
     }
 }

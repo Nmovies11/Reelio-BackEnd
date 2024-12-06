@@ -4,9 +4,11 @@ using System.Text.Json.Serialization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Common.Entities
 {
+    [NotMapped]
     public class Movie
     {
         [JsonPropertyName("id")]

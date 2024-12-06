@@ -28,10 +28,8 @@ namespace BLL.Helpers
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim(ClaimTypes.NameIdentifier, body.Id.ToString()),
-                    new Claim(ClaimTypes.Name, body.Name),
-                    new Claim(ClaimTypes.Email, body.Email)
                 }),
-                Expires = System.DateTime.UtcNow.AddMinutes(3),
+                Expires = DateTime.UtcNow.AddHours(3),
                 SigningCredentials = signingcredentials
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
