@@ -22,6 +22,10 @@ namespace BLL.Services
 
             var showDTOs = await _showRepository.GetRecentShows();
 
+            if(showDTOs == null)
+            {
+                return null;
+            }
 
             return showDTOs;
         }
@@ -29,6 +33,11 @@ namespace BLL.Services
         public async Task<ShowDTO> GetShowById(int id)
         {
             var showDTO = await _showRepository.GetShowById(id);
+
+            if(showDTO == null)
+            {
+                return null;
+            }
 
             return showDTO;
         }
