@@ -6,7 +6,8 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Common.Entities
+namespace DAL.API.Entities
+
 {
     [NotMapped]
     public class Actor

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ReelioUnitTests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f68f58fb9986ad7f55040415a6baea160a704399")]
 [assembly: System.Reflection.AssemblyProductAttribute("ReelioUnitTests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ReelioUnitTests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

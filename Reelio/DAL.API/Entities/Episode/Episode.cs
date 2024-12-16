@@ -1,33 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations.Schema;
+using DAL.API.Entities;
 
-namespace Common.Entities
+namespace DAL.API.Entities
 {
     [NotMapped]
-    public class Movie
+    public class Episode
     {
         [JsonPropertyName("id")]
         public int Id { get; set; }
+
+        [JsonPropertyName("season_id")]
+        public int SeasonId { get; set; }
+
+        [JsonIgnore]
+        public Season Season { get; set; }
+
+        [JsonPropertyName("episode_number")]
+        public int EpisodeNumber { get; set; }
+
         [JsonPropertyName("title")]
         public string Title { get; set; }
+
         [JsonPropertyName("description")]
         public string Description { get; set; }
-        [JsonPropertyName("releaseDate")]
+
+        [JsonPropertyName("release_date")]
         public DateOnly ReleaseDate { get; set; }
+
         [JsonPropertyName("director")]
         public string Director { get; set; }
-        [JsonPropertyName("imageUrl")]
-        public string ImageUrl { get; set; }
-        [JsonPropertyName("backdropUrl")]
-        public string BackdropUrl { get; set; }
-
-        [JsonPropertyName("actors")]
-        public ICollection<Actor>? Actors { get; set; }
-
     }
 }

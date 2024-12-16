@@ -18,7 +18,7 @@ namespace ReelioUnitTests
                 string password = "SecretPassword";
 
                 // Act
-                var encryptedPassword = EncryptionHelper.Encrypt(password);
+                var encryptedPassword = HashHelper.Encrypt(password);
 
                 // Assert
                 Assert.IsNotNull(encryptedPassword);
@@ -30,10 +30,10 @@ namespace ReelioUnitTests
             {
                 // Arrange
                 string password = "SecretPassword";
-                string encryptedPassword = EncryptionHelper.Encrypt(password);
+                string encryptedPassword = HashHelper.Encrypt(password);
 
                 // Act
-                bool result = EncryptionHelper.Verify(password, encryptedPassword);
+                bool result = HashHelper.Verify(password, encryptedPassword);
 
                 // Assert
                 Assert.IsTrue(result);
@@ -45,10 +45,10 @@ namespace ReelioUnitTests
                 // Arrange
                 string correctPassword = "SecretPassword";
                 string incorrectPassword = "WrongPassword";
-                string encryptedPassword = EncryptionHelper.Encrypt(correctPassword);
+                string encryptedPassword = HashHelper.Encrypt(correctPassword);
 
                 // Act
-                bool result = EncryptionHelper.Verify(incorrectPassword, encryptedPassword);
+                bool result = HashHelper.Verify(incorrectPassword, encryptedPassword);
 
                 // Assert
                 Assert.IsFalse(result);
@@ -61,7 +61,7 @@ namespace ReelioUnitTests
                 string invalidEncryptedPassword = "invalidPassword";
 
                 // Act
-                bool result = EncryptionHelper.Verify(password, invalidEncryptedPassword);
+                bool result = HashHelper.Verify(password, invalidEncryptedPassword);
 
                 // Assert
                 Assert.IsFalse(result);

@@ -1,7 +1,6 @@
 ﻿using BLL.Helpers;
 using BLL.Interfaces.Repositories;
 using BLL.Interfaces.Services;
-using Common.Entities;
 using Common.DTO;
 using System;
 using System.Collections.Generic;
@@ -30,10 +29,10 @@ namespace BLL.Services
         public async Task<string?> RegisterUser(UserDTO user)
         {
 
-            user.Password = EncryptionHelper.Encrypt(user.Password);
+            user.Password = HashHelper.Encrypt(user.Password);
             Guid newUserId = Guid.NewGuid();
 
-            User userDTO = new User
+            UserDTO userDTO = new UserDTO
             {
                 Id = newUserId,
                 Username = user.Username,
@@ -56,8 +55,8 @@ namespace BLL.Services
                 };
             }
 
-            User user = await userRepository.GetUserByEmail(body.Email);
-            if (user == null || !EncryptionHelper.Verify(body.Password, user.Password))
+            UserDTO user = await userRepository.GetUserByEmail(body.Email);
+            if (user == null || !HashHelper.Verify(body.Password, user.Password))
             {
                 return new ResponseDTO
                 {
@@ -74,9 +73,9 @@ namespace BLL.Services
             };
         }
 
-            public UserJWTDTO? ValidateToken(string token)
+        public UserJWTDTO? ValidateToken(string token)
         {
-            return jwtHelper.ValidateToken(token);
+           return jwtHelper.ValidateToken(token);
         }
 
     }

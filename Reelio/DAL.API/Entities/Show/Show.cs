@@ -5,23 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using DAL.API.Entities;
 
-namespace Common.Entities
+namespace DAL.API.Entities
 {
     [NotMapped]
-    public class Episode
+    public class Show
     {
         [JsonPropertyName("id")]
         public int Id { get; set; }
-
-        [JsonPropertyName("season_id")]
-        public int SeasonId { get; set; }
-
-        [JsonIgnore]
-        public Season Season { get; set; }
-
-        [JsonPropertyName("episode_number")]
-        public int EpisodeNumber { get; set; }
 
         [JsonPropertyName("title")]
         public string Title { get; set; }
@@ -29,10 +21,16 @@ namespace Common.Entities
         [JsonPropertyName("description")]
         public string Description { get; set; }
 
-        [JsonPropertyName("release_date")]
+        [JsonPropertyName("releaseDate")]
         public DateOnly ReleaseDate { get; set; }
 
-        [JsonPropertyName("director")]
-        public string Director { get; set; }
+        [JsonPropertyName("imageUrl")]
+        public string ImageUrl { get; set; }
+
+        [JsonPropertyName("backdropUrl")]
+        public string BackdropUrl { get; set; }
+
+        [JsonPropertyName("seasons")]
+        public ICollection<Season>? Seasons { get; set; }
     }
 }

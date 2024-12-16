@@ -5,8 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using DAL.API.Entities;
 
-namespace Common.Entities
+namespace DAL.API.Entities
 {
     [NotMapped]
     public class Season

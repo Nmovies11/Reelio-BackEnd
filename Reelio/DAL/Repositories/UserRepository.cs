@@ -13,17 +13,41 @@ namespace DAL.Repositories
         {
             _context = context;
         }
-        public Task AddUser(User user)
+        public Task AddUser(UserDTO user)
         {
-                 _context.Users.Add(user);
+            var userEntity = new User
+            {
+                Id = Guid.NewGuid(), 
+                Username = user.Username,
+                Email = user.Email,
+                Password = user.Password 
+            };
+            _context.Users.Add(userEntity);
                  _context.SaveChanges();
             return Task.CompletedTask;
         }
 
-        public Task<User> GetUserByEmail(string email)
+        public async Task<UserDTO> GetUserByEmail(string email)
         {
-            return _context.Users.FirstOrDefaultAsync(x => x.Email == email);
-        }
+            var userEntity = await  _context.Users.FirstOrDefaultAsync(x => x.Email == email);
 
+
+            // Return null if user not found
+            if (userEntity == null)
+            {
+                return null;
+            }
+
+            // Map the User entity to UserDTO
+            var userDto = new UserDTO
+            {
+                Username = userEntity.Username,
+                Email = userEntity.Email,
+            };
+
+            return userDto;
+        }
     }
+
+   
 }

@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Common.Entities;
+using Common.DTO;
 
 
 namespace BLL.Interfaces.Repositories
 {
     public interface IMovieRepository
     {
-        public Task<List<Movie>> GetRecentMovie();
-        public Task<Movie> GetMovieById(int id);
+        public Task<List<MovieDTO>> GetRecentMovies();
+        public Task<MovieDTODetails> GetMovieById(int id);
 
     }
 }

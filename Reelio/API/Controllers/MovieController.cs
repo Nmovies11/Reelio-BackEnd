@@ -21,7 +21,7 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<List<MovieDTO>> GetRecentMovie()
         {
-            return await movieService.GetRecentMovie();
+            return await movieService.GetRecentMovies();
         }
 
         [HttpGet("TestingAzureContainerV2")]

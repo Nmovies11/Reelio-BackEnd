@@ -1,10 +1,10 @@
 ﻿using System;
-using Common.Entities;
+using Common.DTO;
 namespace BLL.Interfaces.Repositories
 {
     public interface IShowRepository
     {
-        public Task<List<Show>> GetRecentShows();
-        public Task<Show> GetShowById(int id);
+        public Task<List<ShowDTO>> GetRecentShows();
+        public  Task<ShowDTO> GetShowById(int id);
     }
 }
