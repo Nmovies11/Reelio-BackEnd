@@ -2,6 +2,7 @@
 using Common.DTO;
 using Common.Entities;
 using DAL.API.Entities;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,10 +16,17 @@ namespace DAL.API.Repositories
     public class ShowRepository : IShowRepository
     {
         private readonly HttpClient _client = new HttpClient();
+        private readonly string _apiBaseUrl;
+
+        public ShowRepository(IConfiguration configuration)
+        {
+            _apiBaseUrl = configuration["NMDB_URL"];
+        }
+
 
         public async Task<List<ShowDTO>> GetRecentShows()
         {
-            Uri url = new Uri("https://localhost:7076/show/recentshows");
+            Uri url = new Uri(_apiBaseUrl + "/show/recentshows");
             var response = await _client.GetAsync(url);
             var content = await response.Content.ReadAsStringAsync();
             Console.WriteLine(content);
@@ -60,7 +68,7 @@ namespace DAL.API.Repositories
                 queryString += $"&genre={Uri.EscapeDataString(genre)}";
             }
 
-            Uri url = new Uri("https://localhost:7076/Show" + queryString);
+            Uri url = new Uri(_apiBaseUrl + "/Show" + queryString);
 
             var response = await _client.GetAsync(url);
 
@@ -99,7 +107,7 @@ namespace DAL.API.Repositories
 
         public async Task<ShowDTO> GetShowById(int id)
         {
-            Uri url = new Uri("https://localhost:7076/show/" + id);
+            Uri url = new Uri(_apiBaseUrl + "/show/" + id);
             var response = await _client.GetAsync(url);
             var content = await response.Content.ReadAsStringAsync();
             Console.WriteLine(content);

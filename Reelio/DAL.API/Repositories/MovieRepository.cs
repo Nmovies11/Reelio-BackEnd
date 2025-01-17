@@ -15,10 +15,17 @@ namespace DAL.API.Repositories
     public class MovieRepository : IMovieRepository
     {
         private readonly HttpClient _client = new HttpClient();
+        private readonly string _apiBaseUrl;
+
+        public MovieRepository(IConfiguration configuration)
+        {
+
+            _apiBaseUrl = configuration["NMDB_URL"];
+        }
 
         public async Task<List<MovieDTO>> GetRecentMovies()
         {
-            Uri url = new Uri("https://localhost:7076/movie/recentmovies");
+            Uri url = new Uri(_apiBaseUrl + "/movie/recentmovies");
             var response = await _client.GetAsync(url);
             var content = await response.Content.ReadAsStringAsync();
             Console.WriteLine(content);
@@ -43,7 +50,7 @@ namespace DAL.API.Repositories
 
         public async Task<MovieDTODetails> GetMovieById(int id)
         {
-            Uri url = new Uri("https://localhost:7076/movie/" + id);
+            Uri url = new Uri(_apiBaseUrl + "/movie/" + id);
             var response = await _client.GetAsync(url);
             var content = await response.Content.ReadAsStringAsync();
             Console.WriteLine(content);
@@ -100,7 +107,7 @@ namespace DAL.API.Repositories
                 queryString += $"&genre={Uri.EscapeDataString(genre)}";
             }
 
-            Uri url = new Uri("https://localhost:7076/Movie" + queryString);
+            Uri url = new Uri(_apiBaseUrl + "/Movie" + queryString);
 
             var response = await _client.GetAsync(url);
 

@@ -64,7 +64,7 @@ if(builder.Environment.IsStaging())
 
     builder.Configuration.AddAzureKeyVault(secretClient, new AzureKeyVaultConfigurationOptions());
 
-    var connectionString = builder.Configuration["  "];
+    var connectionString = builder.Configuration["DatabaseURLStaging"];
 
     if (string.IsNullOrEmpty(connectionString))
     {

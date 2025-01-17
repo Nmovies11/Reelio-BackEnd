@@ -1874,7 +1874,8 @@
         "dependencies": {
           "BLL": "1.0.0",
           "Common": "1.0.0",
-          "DAL": "1.0.0"
+          "DAL": "1.0.0",
+          "Microsoft.Extensions.Configuration.UserSecrets": "6.0.1"
         },
         "compile": {
           "bin/placeholder/DAL.API.dll": {}
