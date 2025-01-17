@@ -24,23 +24,28 @@ namespace API.Controllers
             return await movieService.GetRecentMovies();
         }
 
-        [HttpGet("TestingAzureContainerV2")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MovieDTO))]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<string> TestInfo()
-        {
-            return "Yo will this please work";
-        }
-
-
-
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MovieDTODetails))]
-        public async Task<MovieDTODetails> GetMovieById(int id)
+        public async Task<IActionResult> GetMovieById(int id)
         {
-            return await movieService.GetMovieById(id);
+            MovieDTODetails movie = await movieService.GetMovieById(id);
+            if(movie  == null)
+            {
+                return NotFound();
+            }
+            return Ok(movie);
         }
 
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaginatedList<MovieDTO>))]
+        public async Task<PaginatedList<MovieDTO>> GetMovies(
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10,
+            [FromQuery] string? searchQuery = null,
+            [FromQuery] string? genre = null)
+            {
+            return await movieService.GetMovies(pageNumber, pageSize, searchQuery, genre);
+        }
         
     }
 }

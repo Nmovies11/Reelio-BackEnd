@@ -8,7 +8,6 @@ using API.Middleware;
 using Azure.Identity;
 using Azure.Extensions.AspNetCore.Configuration.Secrets;
 using Azure.Security.KeyVault.Secrets;
-using System;
 
 var builder = WebApplication.CreateBuilder(args);
 

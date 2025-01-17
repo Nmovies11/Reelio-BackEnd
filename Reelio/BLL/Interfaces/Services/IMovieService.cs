@@ -11,6 +11,6 @@ namespace BLL.Interfaces.Services
     {
         public Task<List<MovieDTO>> GetRecentMovies();
         public Task<MovieDTODetails> GetMovieById(int id);
-
+        public Task<PaginatedList<MovieDTO>> GetMovies(int pageNumber, int pageSize, string searchQuery, string genre);
     }
 }

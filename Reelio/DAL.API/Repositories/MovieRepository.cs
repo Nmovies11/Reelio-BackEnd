@@ -23,15 +23,14 @@ namespace DAL.API.Repositories
             var content = await response.Content.ReadAsStringAsync();
             Console.WriteLine(content);
 
-            // Deserialize content into a list of Movie entities
+
             var movieEntities = JsonSerializer.Deserialize<List<Movie>>(content);
 
             if (movieEntities == null || !movieEntities.Any())
             {
-                return new List<MovieDTO>(); // Return an empty list if no movies found
+                return new List<MovieDTO>();
             }
 
-            // Convert entities to DTOs
             return movieEntities.Select(movieEntity => new MovieDTO
             {
                 Id = movieEntity.Id,
@@ -56,7 +55,6 @@ namespace DAL.API.Repositories
                 throw new InvalidOperationException("Failed to deserialize movie.");
             }
 
-            // Convert the Movie entity into a MovieDTODetails and return it
             var movieDTO = new MovieDTODetails
             {
                 Id = movieEntity.Id,
@@ -76,7 +74,7 @@ namespace DAL.API.Repositories
         {
             if (actorDTOs == null)
             {
-                return new List<ActorDTO>(); // or return an empty list as fallback
+                return new List<ActorDTO>();
             }
 
             return actorDTOs.Select(actorDTO => new ActorDTO
@@ -87,6 +85,58 @@ namespace DAL.API.Repositories
                 Role = actorDTO.Role
             }).ToList();
         }
+
+        public async Task<PaginatedList<MovieDTO>> GetMovies(int pageNumber, int pageSize, string? searchQuery, string? genre)
+        {
+            var queryString = $"?pageNumber={pageNumber}&pageSize={pageSize}";
+
+            if (!string.IsNullOrWhiteSpace(searchQuery))
+            {
+                queryString += $"&searchQuery={Uri.EscapeDataString(searchQuery)}";
+            }
+
+            if (!string.IsNullOrWhiteSpace(genre))
+            {
+                queryString += $"&genre={Uri.EscapeDataString(genre)}";
+            }
+
+            Uri url = new Uri("https://localhost:7076/Movie" + queryString);
+
+            var response = await _client.GetAsync(url);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpRequestException($"Failed to fetch movies. Status Code: {response.StatusCode}");
+            }
+
+            var content = await response.Content.ReadAsStringAsync();
+            Console.WriteLine("Response Content: " + content);
+
+            var paginatedList = JsonSerializer.Deserialize<PaginatedList<Movie>>(content, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true 
+            });
+
+            if (paginatedList == null)
+            {
+                throw new InvalidOperationException("Failed to deserialize paginated list.");
+            }
+
+            paginatedList.Items ??= new List<Movie>();
+
+            var movieDTOs = paginatedList.Items.Select(movieEntity => new MovieDTO
+            {
+                Id = movieEntity.Id,
+                Title = movieEntity.Title,
+                ReleaseDate = movieEntity.ReleaseDate,
+                Director = movieEntity.Director,
+                ImageUrl = movieEntity.ImageUrl
+            }).ToList();
+
+            return new PaginatedList<MovieDTO>(movieDTOs, paginatedList.TotalCount, paginatedList.PageNumber, paginatedList.PageSize);
+        }
+
+
 
     }
 }

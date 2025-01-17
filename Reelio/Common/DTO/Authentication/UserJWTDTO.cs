@@ -10,18 +10,14 @@ namespace Common.DTO
 {
     public class UserJWTDTO
     {
-        public UserJWTDTO(Guid id, string name, string email)
+        public UserJWTDTO(Guid id)
         {
             Id = id;
 
-            Name = new Regex(@"[^A-Za-z0-9 ]").Replace(name, "");
-            Email = email;
         }
 
 
-        [JsonIgnore] public Guid Id { get; set; }
+         public Guid Id { get; set; }
 
-        public string Name { get; set;  }
-        public string Email { get; set; }
     }
 }

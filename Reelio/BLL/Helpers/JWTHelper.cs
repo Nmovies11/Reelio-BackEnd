@@ -3,6 +3,8 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Security.Claims;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authentication;
 
 
 
@@ -12,7 +14,7 @@ namespace BLL.Helpers
     {
         private readonly string _secret;
 
-        public JWTHelper(string secret)
+        public JWTHelper(string secret )
         {
             _secret = secret;
         }
@@ -50,13 +52,13 @@ namespace BLL.Helpers
             };
 
             try
-            {
+            {   
                 SecurityToken validatedToken;
                 var principal = tokenHandler.ValidateToken(token, validationParameters, out validatedToken);
+                var claims = principal.Claims.ToList();
+
                 return new UserJWTDTO(
-                    Guid.Parse(principal.FindFirst(ClaimTypes.NameIdentifier).Value),
-                    principal.FindFirst(ClaimTypes.Name).Value,
-                    principal.FindFirst(ClaimTypes.Email).Value
+                    Guid.Parse(principal.FindFirst(ClaimTypes.NameIdentifier).Value)
                 );
             }
             catch (Exception)

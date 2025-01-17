@@ -12,9 +12,9 @@ namespace API.Middleware
 
         private static readonly HashSet<string> ExcludedPaths = new(StringComparer.OrdinalIgnoreCase)
         {
-            "/v3/api-docs", "/login", "/register"
+            "/v3/api-docs", "/users/login", "/users"
         };
-        private static readonly string[] ExcludedPrefixes = { "/external", "/movie", "/show", "/swagger", "/environments" };
+        private static readonly string[] ExcludedPrefixes = { "/external", "/movie", "/show", "/swagger", "/environments", "/users", "favicon" };
 
         private bool IsExcludedPath(string path)
         {

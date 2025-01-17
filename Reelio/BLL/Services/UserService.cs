@@ -9,6 +9,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Common.DTO.Authentication;
 using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
+using Common.DTO.WatchList;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace BLL.Services
 {
@@ -41,7 +46,7 @@ namespace BLL.Services
             };
 
             await userRepository.AddUser(userDTO);
-            return jwtHelper.GenerateToken(new UserJWTDTO(user.Id, user.Username, user.Email));
+            return jwtHelper.GenerateToken(new UserJWTDTO(userDTO.Id));
         }
 
 
@@ -64,7 +69,7 @@ namespace BLL.Services
                 };
             }
 
-            UserJWTDTO userJWT = new UserJWTDTO(user.Id, user.Username, user.Email);
+            UserJWTDTO userJWT = new UserJWTDTO(user.Id );
 
             return new ResponseDTO
             {
@@ -78,5 +83,51 @@ namespace BLL.Services
            return jwtHelper.ValidateToken(token);
         }
 
+
+        public List<WatchListDTO> GetWatchlist(Guid userId)
+        {
+            var items = userRepository.GetWatchlist(userId);
+
+            return items.Select(item => new WatchListDTO
+            {
+                Id = item.Id,
+                ContentId = item.ContentId,
+                ContentType = item.ContentType,
+                Status = item.Status,
+                Rating = item.Rating,
+                Review = item.Review
+            }).ToList();
+        }
+
+        public WatchListDTO AddToWatchlist(Guid userId, CreateWatchlistDTO dto)
+        {
+            if (dto.ContentType.ToLower() != "movie" && dto.ContentType.ToLower() != "show")
+            {
+                throw new ArgumentException("Invalid content type. Must be 'movie' or 'show'.");
+            }
+
+            var watchlistEntity = userRepository.AddToWatchlist(userId, dto);
+
+            return new WatchListDTO
+            {
+                Id = watchlistEntity.Id,
+                ContentId = watchlistEntity.ContentId,
+                ContentType = watchlistEntity.ContentType,
+                Status = watchlistEntity.Status,
+                Rating = watchlistEntity.Rating,
+                Review = watchlistEntity.Review,
+            };
+        }
+
+        public async Task<bool> RemoveFromWatchlist(Guid userId, Guid watchlistItemId)
+        {
+            return await userRepository.RemoveFromWatchlistAsync(userId, watchlistItemId);
+        }
+
+        //get user by id
+        public async Task<UserDTODetails> GetUserById(Guid id)
+        {
+            return await userRepository.GetUserById(id);
+        }
     }
 }

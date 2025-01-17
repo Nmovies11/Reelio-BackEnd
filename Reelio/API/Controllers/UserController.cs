@@ -4,6 +4,12 @@ using Common.DTO;
 using Azure;
 using BLL.Services;
 using Microsoft.AspNetCore.Identity.Data;
+using Microsoft.AspNetCore.Authorization;
+using Common.Entities;
+using DAL.Entities.User;
+using Common.DTO.WatchList;
+using Common.DTO.Authentication;
+
 namespace API.Controllers
 {
     [ApiController]
@@ -20,13 +26,20 @@ namespace API.Controllers
         [Route("/account")]
         public UserJWTDTO? GetAccount()
         {
-            return HttpContext.Items["User"] as UserJWTDTO;
+            var user = HttpContext.Items["User"] as UserJWTDTO;
+            if (user == null)
+            {
+                Console.WriteLine("User not found in HttpContext.Items");
+            }
+            Console.WriteLine($"User data: {user.Id}");
+
+            return user;
         }
 
-        [HttpPost]
+
+        [HttpPost("login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [Route("/login")]
         public async Task<IActionResult> Login([FromBody] LoginDTO body)
         {
             if (body == null)
@@ -45,8 +58,25 @@ namespace API.Controllers
 
         }
 
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserDTODetails))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public  Task<UserDTODetails> GetUserById(Guid id)
+        {
+            var user = userService.GetUserById(id);
 
-        [HttpPost("/register")]
+            if (user == null)
+            {
+                throw new KeyNotFoundException("User not found.");
+            }
+
+            return user;
+        }
+
+ 
+
+
+        [HttpPost()]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> Register([FromBody] UserDTO model)
@@ -57,7 +87,7 @@ namespace API.Controllers
                 Email = model.Email,
                 Password = model.Password
             };
-            
+
             if (userDTO == null)
             {
                 return BadRequest("Invalid user data.");
@@ -70,13 +100,64 @@ namespace API.Controllers
                 return BadRequest("User registration failed or token generation error.");
             }
 
-            return Ok(new
-            {
-                message = "Registration successful",
-                token
-            });
+            return CreatedAtAction(nameof(GetAccount), new { }, new { message = "User registered successfully", token = token });
         }
 
+        [HttpGet("{id}/watchlist")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ShowDTO>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<List<WatchListDTO>> GetWatchlist(Guid id)
+        {
+            
+            var watchlist = userService.GetWatchlist(id);
+
+            return watchlist;
+        }
+
+        [HttpPost("{id}/watchlist")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> AddToWatchlist(Guid id, [FromBody] CreateWatchlistDTO watchlistItem)
+        {
+            if (watchlistItem == null)
+            {
+                return BadRequest("Watchlist item data is required.");
+            }
+
+            try
+            {
+                WatchListDTO response =  userService.AddToWatchlist(id, watchlistItem);
+
+                if (response == null)
+                {
+                    return NotFound("User not found or unable to add item to watchlist.");
+                }
+
+                // Return the created watchlist item along with its location
+                return CreatedAtAction(nameof(GetWatchlist), new { id = response.Id }, response);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An unexpected error occurred.");
+            }
+        }
+
+
+        [HttpDelete("{userId}/watchlist/{watchlistItemId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]  
+        [ProducesResponseType(StatusCodes.Status404NotFound)]   
+        public async Task<IActionResult> RemoveFromWatchlist(Guid userId, Guid watchlistItemId)
+        {
+            var result = await userService.RemoveFromWatchlist(userId, watchlistItemId);
+
+            if (!result)
+            {
+                return NotFound("Cant find watchlist");
+            }
+
+            return NoContent();
+        }
 
     }
 }

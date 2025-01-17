@@ -46,6 +46,49 @@ namespace DAL.Migrations
 
                     b.ToTable("users");
                 });
+
+            modelBuilder.Entity("DAL.Entities.User.Watchlist", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)")
+                        .HasColumnName("id");
+
+                    b.Property<string>("ContentId")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("contentid");
+
+                    b.Property<string>("ContentType")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("contenttype");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("createdat");
+
+                    b.Property<double?>("Rating")
+                        .HasColumnType("double")
+                        .HasColumnName("rating");
+
+                    b.Property<string>("Review")
+                        .HasColumnType("longtext")
+                        .HasColumnName("review");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("status");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("userid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Watchlists");
+                });
 #pragma warning restore 612, 618
         }
     }

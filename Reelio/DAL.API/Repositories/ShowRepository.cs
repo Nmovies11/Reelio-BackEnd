@@ -46,6 +46,57 @@ namespace DAL.API.Repositories
 
         }
 
+        public async Task<PaginatedList<ShowDTO>> GetShows(int pageNumber, int pageSize, string? searchQuery, string? genre)
+        {
+            var queryString = $"?pageNumber={pageNumber}&pageSize={pageSize}";
+
+            if (!string.IsNullOrWhiteSpace(searchQuery))
+            {
+                queryString += $"&searchQuery={Uri.EscapeDataString(searchQuery)}";
+            }
+
+            if (!string.IsNullOrWhiteSpace(genre))
+            {
+                queryString += $"&genre={Uri.EscapeDataString(genre)}";
+            }
+
+            Uri url = new Uri("https://localhost:7076/Show" + queryString);
+
+            var response = await _client.GetAsync(url);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpRequestException($"Failed to fetch shows. Status Code: {response.StatusCode}");
+            }
+
+            var content = await response.Content.ReadAsStringAsync();
+            Console.WriteLine("Response Content: " + content);
+
+            var paginatedList = JsonSerializer.Deserialize<PaginatedList<Show>>(content, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true 
+            });
+
+            if (paginatedList == null)
+            {
+                throw new InvalidOperationException("Failed to deserialize paginated list.");
+            }
+
+            paginatedList.Items ??= new List<Show>();
+
+            var showDTOs = paginatedList.Items.Select(showEntity => new ShowDTO
+            {
+                Id = showEntity.Id,
+                Title = showEntity.Title,
+                ReleaseDate = showEntity.ReleaseDate,
+                ImageUrl = showEntity.ImageUrl
+            }).ToList();
+
+            // Return the PaginatedList<ShowDTO>
+            return new PaginatedList<ShowDTO>(showDTOs, paginatedList.TotalCount, paginatedList.PageNumber, paginatedList.PageSize);
+        }
+
+
         public async Task<ShowDTO> GetShowById(int id)
         {
             Uri url = new Uri("https://localhost:7076/show/" + id);
@@ -84,5 +135,6 @@ namespace DAL.API.Repositories
 
             return showDTO;
         }
+
     }
 }

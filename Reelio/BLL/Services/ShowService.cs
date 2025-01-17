@@ -42,5 +42,17 @@ namespace BLL.Services
             return showDTO;
         }
 
+        public async Task<PaginatedList<ShowDTO>> GetShows(int pageNumber, int pageSize, string searchQuery, string genre)
+        {
+            var shows = await _showRepository.GetShows(pageNumber, pageSize, searchQuery, genre);
+
+            if(shows == null)
+            {
+                return null;
+            }
+
+            return shows;
+        }
+
     }
 }

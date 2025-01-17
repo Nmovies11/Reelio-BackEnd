@@ -25,5 +25,10 @@ namespace BLL.Services
             // Service layer only interacts with DTOs
             return await movieAPIRepository.GetMovieById(id);
         }
+
+        public async Task<PaginatedList<MovieDTO>> GetMovies(int pageNumber, int pageSize, string searchQuery, string genre)
+        {
+            return await movieAPIRepository.GetMovies(pageNumber, pageSize, searchQuery, genre);
+        }
     }
 }
