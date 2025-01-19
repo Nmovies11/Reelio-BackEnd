@@ -119,9 +119,9 @@ namespace BLL.Services
             };
         }
 
-        public async Task<bool> RemoveFromWatchlist(Guid userId, Guid watchlistItemId)
+        public async Task<bool> RemoveFromWatchlist(Guid userId, string watchlistItemId, string contentType)
         {
-            return await userRepository.RemoveFromWatchlistAsync(userId, watchlistItemId);
+            return await userRepository.RemoveFromWatchlistAsync(userId, watchlistItemId, contentType);
         }
 
         //get user by id

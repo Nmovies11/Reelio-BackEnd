@@ -8,6 +8,7 @@ using API.Middleware;
 using Azure.Identity;
 using Azure.Extensions.AspNetCore.Configuration.Secrets;
 using Azure.Security.KeyVault.Secrets;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -122,6 +123,11 @@ app.UseMiddleware<AuthenticationMiddleware>();
     app.UseSwagger();
     app.UseSwaggerUI();
 
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.Migrate();
+}
 
 
 

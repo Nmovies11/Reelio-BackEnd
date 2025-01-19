@@ -129,14 +129,14 @@ namespace DAL.Repositories
             return watchlistDto;
         }
 
-        public async Task<bool> RemoveFromWatchlistAsync(Guid userId, Guid watchlistItemId)
+        public async Task<bool> RemoveFromWatchlistAsync(Guid userId, string watchlistItemId, string contentType)
         {
             var watchlistItem = await _context.Watchlists
-                .FirstOrDefaultAsync(w => w.UserId == userId && w.Id == watchlistItemId);
+                .FirstOrDefaultAsync(w => w.UserId == userId && w.ContentId == watchlistItemId && w.ContentType == contentType);
 
             if (watchlistItem == null)
             {
-                return false; 
+                return false;
             }
 
             _context.Watchlists.Remove(watchlistItem);

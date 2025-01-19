@@ -147,13 +147,18 @@ namespace API.Controllers
         [HttpDelete("{userId}/watchlist/{watchlistItemId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]  
         [ProducesResponseType(StatusCodes.Status404NotFound)]   
-        public async Task<IActionResult> RemoveFromWatchlist(Guid userId, Guid watchlistItemId)
+        public async Task<IActionResult> RemoveFromWatchlist(Guid userId, string watchlistItemId, [FromQuery] string contentType)
         {
-            var result = await userService.RemoveFromWatchlist(userId, watchlistItemId);
+            if (string.IsNullOrEmpty(contentType))
+            {
+                return BadRequest("Content type is required.");
+            }
+
+            var result = await userService.RemoveFromWatchlist(userId, watchlistItemId, contentType);
 
             if (!result)
             {
-                return NotFound("Cant find watchlist");
+                return NotFound("Watchlist item not found.");
             }
 
             return NoContent();
