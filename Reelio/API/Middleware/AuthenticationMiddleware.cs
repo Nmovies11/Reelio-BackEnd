@@ -14,7 +14,7 @@ namespace API.Middleware
         {
             "/v3/api-docs", "/users/login", "/users"
         };
-        private static readonly string[] ExcludedPrefixes = { "/external", "/movie", "/show", "/swagger", "/environments", "/users", "favicon" };
+        private static readonly string[] ExcludedPrefixes = { "/external", "/movie", "/actors", "/show", "/swagger", "/environments", "/users", "favicon" };
 
         private bool IsExcludedPath(string path)
         {

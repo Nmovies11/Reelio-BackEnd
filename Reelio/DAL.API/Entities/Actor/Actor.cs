@@ -16,9 +16,9 @@ namespace DAL.API.Entities
         public int Id { get; set; }
         [JsonPropertyName("name")]
         public string Name { get; set; }
-        [JsonPropertyName("birthdate")]
+        [JsonPropertyName("birthDate")]
         public DateTime BirthDate { get; set; }
-        [JsonPropertyName("biography")]
+        [JsonPropertyName("bio")]
         public string Bio { get; set; }
         [JsonPropertyName("imageUrl")]
         public string ImageUrl { get; set; }

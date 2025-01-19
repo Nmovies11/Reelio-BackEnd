@@ -100,7 +100,6 @@ namespace DAL.API.Repositories
                 ImageUrl = showEntity.ImageUrl
             }).ToList();
 
-            // Return the PaginatedList<ShowDTO>
             return new PaginatedList<ShowDTO>(showDTOs, paginatedList.TotalCount, paginatedList.PageNumber, paginatedList.PageSize);
         }
 

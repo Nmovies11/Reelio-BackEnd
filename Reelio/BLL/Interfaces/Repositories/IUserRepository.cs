@@ -16,7 +16,9 @@ namespace BLL.Interfaces.Repositories
         public List<WatchListDTO> GetWatchlist(Guid userId);
         public Task<UserDTODetails> GetUserById(Guid id);
         public WatchListDTO AddToWatchlist(Guid userId, CreateWatchlistDTO dto);
-        public Task<bool> RemoveFromWatchlistAsync(Guid userId, string watchlistItemId, string contentType);
+        public Task<bool> RemoveFromWatchlistAsync(Guid userId, Guid watchlistItemId);
+        public Task<WatchListDTO> GetWatchlistItemAsync(Guid userId, Guid watchlistItemId);
+        public Task<bool> UpdateWatchlistItemAsync(WatchListDTO watchlist);
 
     }
 }

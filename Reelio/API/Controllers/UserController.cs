@@ -9,6 +9,7 @@ using Common.Entities;
 using DAL.Entities.User;
 using Common.DTO.WatchList;
 using Common.DTO.Authentication;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -134,7 +135,6 @@ namespace API.Controllers
                     return NotFound("User not found or unable to add item to watchlist.");
                 }
 
-                // Return the created watchlist item along with its location
                 return CreatedAtAction(nameof(GetWatchlist), new { id = response.Id }, response);
             }
             catch (Exception)
@@ -147,14 +147,11 @@ namespace API.Controllers
         [HttpDelete("{userId}/watchlist/{watchlistItemId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]  
         [ProducesResponseType(StatusCodes.Status404NotFound)]   
-        public async Task<IActionResult> RemoveFromWatchlist(Guid userId, string watchlistItemId, [FromQuery] string contentType)
+        public async Task<IActionResult> RemoveFromWatchlist(Guid userId, Guid watchlistItemId)
         {
-            if (string.IsNullOrEmpty(contentType))
-            {
-                return BadRequest("Content type is required.");
-            }
 
-            var result = await userService.RemoveFromWatchlist(userId, watchlistItemId, contentType);
+
+            var result = await userService.RemoveFromWatchlist(userId, watchlistItemId);
 
             if (!result)
             {
@@ -163,6 +160,29 @@ namespace API.Controllers
 
             return NoContent();
         }
+
+        [HttpPut("{userId}/watchlist/{watchlistItemId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> EditWatchlist(Guid userId, Guid watchlistItemId, [FromQuery] string contentType, [FromBody] WatchListEditRequestDTO request)
+        {
+            if (string.IsNullOrEmpty(contentType))
+            {
+                return BadRequest("Content type is required.");
+            }
+
+            var result = await userService.EditWatchlistItemAsync(userId, watchlistItemId, request);
+
+            if (!result)
+            {
+                return NotFound("Watchlist item not found.");
+            }
+
+            return NoContent();
+        }
+
+
 
     }
 }

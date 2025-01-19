@@ -129,10 +129,10 @@ namespace DAL.Repositories
             return watchlistDto;
         }
 
-        public async Task<bool> RemoveFromWatchlistAsync(Guid userId, string watchlistItemId, string contentType)
+        public async Task<bool> RemoveFromWatchlistAsync(Guid userId, Guid watchlistItemId)
         {
             var watchlistItem = await _context.Watchlists
-                .FirstOrDefaultAsync(w => w.UserId == userId && w.ContentId == watchlistItemId && w.ContentType == contentType);
+                .FirstOrDefaultAsync(w => w.UserId == userId && w.Id == watchlistItemId );
 
             if (watchlistItem == null)
             {
@@ -140,6 +140,44 @@ namespace DAL.Repositories
             }
 
             _context.Watchlists.Remove(watchlistItem);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<WatchListDTO> GetWatchlistItemAsync(Guid userId, Guid watchlistItemId)
+        {
+            WatchListDTO ?watchlistItem = await _context.Watchlists
+                .Where(w => w.UserId == userId && w.Id == watchlistItemId)
+                .Select(w => new WatchListDTO
+                {
+                    Id = w.Id,
+                    ContentId = w.ContentId,
+                    ContentType = w.ContentType,
+                    Status = w.Status,
+                    Rating = w.Rating,
+                    Review = w.Review
+                })
+                .FirstOrDefaultAsync();
+
+            return watchlistItem;
+
+        }
+
+        public async Task<bool> UpdateWatchlistItemAsync(WatchListDTO watchlistItem)
+        {
+            var watchlistEntity = await _context.Watchlists
+                .FirstOrDefaultAsync(w => w.Id == watchlistItem.Id);
+
+            if (watchlistEntity == null)
+            {
+                return false;
+            }
+
+            watchlistEntity.Status = watchlistItem.Status;
+            watchlistEntity.Rating = watchlistItem.Rating;
+            watchlistEntity.Review = watchlistItem.Review;
+
             await _context.SaveChangesAsync();
 
             return true;

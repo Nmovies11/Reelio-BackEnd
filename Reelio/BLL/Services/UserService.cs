@@ -119,15 +119,34 @@ namespace BLL.Services
             };
         }
 
-        public async Task<bool> RemoveFromWatchlist(Guid userId, string watchlistItemId, string contentType)
+        public async Task<bool> RemoveFromWatchlist(Guid userId, Guid watchlistItemId)
         {
-            return await userRepository.RemoveFromWatchlistAsync(userId, watchlistItemId, contentType);
+            return await userRepository.RemoveFromWatchlistAsync(userId, watchlistItemId);
         }
 
-        //get user by id
+
         public async Task<UserDTODetails> GetUserById(Guid id)
         {
             return await userRepository.GetUserById(id);
+        }
+
+        public async Task<bool> EditWatchlistItemAsync(Guid userId, Guid watchlistItemId, WatchListEditRequestDTO request)
+        {
+            // Retrieve the watchlist item from the repository
+            var watchlistItem = await userRepository.GetWatchlistItemAsync(userId, watchlistItemId);
+
+            if (watchlistItem == null)
+            {
+                return false; // Return false if the item doesn't exist
+            }
+
+            // Update the item with the new data from the DTO
+            watchlistItem.Status = request.Status;
+            watchlistItem.Rating = request.Rating;
+            watchlistItem.Review = request.Review;
+
+            // Save the updated item via the repository
+            return await userRepository.UpdateWatchlistItemAsync(watchlistItem);
         }
     }
 }
