@@ -23,8 +23,6 @@ namespace BLL.Services
         private readonly JWTHelper jwtHelper;
         private readonly IConfiguration _configuration;
 
-
-
         public UserService(IUserRepository iuserRepository, IConfiguration configuration)
         {
             userRepository = iuserRepository;
@@ -48,7 +46,6 @@ namespace BLL.Services
             await userRepository.AddUser(userDTO);
             return jwtHelper.GenerateToken(new UserJWTDTO(userDTO.Id));
         }
-
 
         public async Task<ResponseDTO> Authenticate(LoginDTO body)
         {
@@ -82,7 +79,6 @@ namespace BLL.Services
         {
            return jwtHelper.ValidateToken(token);
         }
-
 
         public List<WatchListDTO> GetWatchlist(Guid userId)
         {
@@ -124,7 +120,6 @@ namespace BLL.Services
             return await userRepository.RemoveFromWatchlistAsync(userId, watchlistItemId);
         }
 
-
         public async Task<UserDTODetails> GetUserById(Guid id)
         {
             return await userRepository.GetUserById(id);
@@ -132,20 +127,17 @@ namespace BLL.Services
 
         public async Task<bool> EditWatchlistItemAsync(Guid userId, Guid watchlistItemId, WatchListEditRequestDTO request)
         {
-            // Retrieve the watchlist item from the repository
             var watchlistItem = await userRepository.GetWatchlistItemAsync(userId, watchlistItemId);
 
             if (watchlistItem == null)
             {
-                return false; // Return false if the item doesn't exist
+                return false; 
             }
 
-            // Update the item with the new data from the DTO
             watchlistItem.Status = request.Status;
             watchlistItem.Rating = request.Rating;
             watchlistItem.Review = request.Review;
 
-            // Save the updated item via the repository
             return await userRepository.UpdateWatchlistItemAsync(watchlistItem);
         }
     }

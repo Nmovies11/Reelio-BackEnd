@@ -25,13 +25,6 @@ namespace API.Controllers
             return await showService.GetShows(pageNumber, pageSize, searchQuery, genre);
         }
 
-        [HttpGet("recentshows")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ShowDTO))]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<List<ShowDTO>> GetRecentShows()
-        {
-            return await showService.GetRecentShows();
-        }
 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ShowDTO))]

@@ -18,7 +18,7 @@ namespace Common.DTO
         public DateOnly ReleaseDate { get; set; }
         public string Description { get; set; }
         public string BackdropUrl { get; set; }
-        public int Runtime { get; set; }
+        public double Runtime { get; set; }
         public ICollection<ActorDTO>? Actors { get; set; } = new List<ActorDTO>();
 
     }

@@ -16,6 +16,8 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaginatedList<MovieDTO>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Index(
         int pageNumber = 1,
         int pageSize = 10,
@@ -27,6 +29,8 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActorDTODetails))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetActorById(int id)
         {
             ActorDTODetails actor = await _actorService.GetActorById(id);

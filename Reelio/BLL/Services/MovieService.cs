@@ -12,17 +12,13 @@ namespace BLL.Services
             movieAPIRepository = imovieAPIRepository;
         }
 
-        //get recent movie
         public async Task<List<MovieDTO>> GetRecentMovies()
         {
             return await movieAPIRepository.GetRecentMovies();
         }
 
-
-        //get movie by ID
         public async Task<MovieDTODetails> GetMovieById(int id)
         {
-            // Service layer only interacts with DTOs
             return await movieAPIRepository.GetMovieById(id);
         }
 

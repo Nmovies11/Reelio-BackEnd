@@ -27,6 +27,8 @@ namespace DAL.API.Entities
         public string ImageUrl { get; set; }
         [JsonPropertyName("backdropUrl")]
         public string BackdropUrl { get; set; }
+        [JsonPropertyName("runtime")]
+        public int Runtime { get; set; }
 
         [JsonPropertyName("actors")]
         public ICollection<Actor>? Actors { get; set; }

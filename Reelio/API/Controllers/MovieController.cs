@@ -16,16 +16,9 @@ namespace API.Controllers
             movieService = _movieService;
         }
 
-        [HttpGet("recentmovies")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MovieDTO))]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<List<MovieDTO>> GetRecentMovie()
-        {
-            return await movieService.GetRecentMovies();
-        }
-
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MovieDTODetails))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetMovieById(int id)
         {
             MovieDTODetails movie = await movieService.GetMovieById(id);
@@ -38,6 +31,7 @@ namespace API.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaginatedList<MovieDTO>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<PaginatedList<MovieDTO>> GetMovies(
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 10,

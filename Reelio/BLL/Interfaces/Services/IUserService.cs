@@ -19,8 +19,5 @@ namespace BLL.Interfaces.Services
         public WatchListDTO AddToWatchlist(Guid userId, CreateWatchlistDTO dto);
         public Task<bool> RemoveFromWatchlist(Guid userId, Guid watchlistItemId);
         public Task<bool> EditWatchlistItemAsync(Guid userId, Guid watchlistItemId, WatchListEditRequestDTO request);
-
-
-
     }
 }

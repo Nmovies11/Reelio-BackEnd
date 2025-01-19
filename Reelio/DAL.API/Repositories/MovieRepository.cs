@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using BLL.Interfaces.Repositories;
@@ -14,75 +14,107 @@ namespace DAL.API.Repositories
 {
     public class MovieRepository : IMovieRepository
     {
-        private readonly HttpClient _client = new HttpClient();
+        private static readonly HttpClient _client = new HttpClient(); 
         private readonly string _apiBaseUrl;
+        private readonly JsonSerializerOptions _jsonSerializerOptions;
 
         public MovieRepository(IConfiguration configuration)
         {
-
             _apiBaseUrl = configuration["NMDB_URL"];
+            _jsonSerializerOptions = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+            };
+        }
+
+        private string BuildQueryString(int pageNumber, int pageSize, string? searchQuery, string? genre)
+        {
+            var queryString = $"?pageNumber={pageNumber}&pageSize={pageSize}";
+
+            if (!string.IsNullOrWhiteSpace(searchQuery))
+                queryString += $"&searchQuery={Uri.EscapeDataString(searchQuery)}";
+
+            if (!string.IsNullOrWhiteSpace(genre))
+                queryString += $"&genre={Uri.EscapeDataString(genre)}";
+
+            return queryString;
         }
 
         public async Task<List<MovieDTO>> GetRecentMovies()
         {
             Uri url = new Uri(_apiBaseUrl + "/movie/recentmovies");
-            var response = await _client.GetAsync(url);
-            var content = await response.Content.ReadAsStringAsync();
-            Console.WriteLine(content);
 
-
-            var movieEntities = JsonSerializer.Deserialize<List<Movie>>(content);
-
-            if (movieEntities == null || !movieEntities.Any())
+            try
             {
-                return new List<MovieDTO>();
+                var response = await _client.GetAsync(url).ConfigureAwait(false);
+                var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+                if (!response.IsSuccessStatusCode)
+                    throw new HttpRequestException($"Failed to fetch recent movies. Status Code: {response.StatusCode}");
+
+                var movieEntities = JsonSerializer.Deserialize<List<Movie>>(content, _jsonSerializerOptions);
+
+                if (movieEntities == null || !movieEntities.Any())
+                    return new List<MovieDTO>();
+
+                return movieEntities.Select(movieEntity => new MovieDTO
+                {
+                    Id = movieEntity.Id,
+                    Title = movieEntity.Title,
+                    ReleaseDate = movieEntity.ReleaseDate,
+                    Director = movieEntity.Director,
+                    ImageUrl = movieEntity.ImageUrl
+                }).ToList();
             }
-
-            return movieEntities.Select(movieEntity => new MovieDTO
+            catch (Exception ex)
             {
-                Id = movieEntity.Id,
-                Title = movieEntity.Title,
-                ReleaseDate = movieEntity.ReleaseDate,
-                Director = movieEntity.Director,
-                ImageUrl = movieEntity.ImageUrl
-            }).ToList();
+                throw new ApplicationException($"Error fetching recent movies: {ex.Message}", ex);
+            }
         }
 
         public async Task<MovieDTODetails> GetMovieById(int id)
         {
             Uri url = new Uri(_apiBaseUrl + "/movie/" + id);
-            var response = await _client.GetAsync(url);
-            var content = await response.Content.ReadAsStringAsync();
-            Console.WriteLine(content);
 
-            var movieEntity = JsonSerializer.Deserialize<Movie>(content);
-
-            if (movieEntity == null)
+            try
             {
-                throw new InvalidOperationException("Failed to deserialize movie.");
+                var response = await _client.GetAsync(url).ConfigureAwait(false);
+                var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+                if (!response.IsSuccessStatusCode)
+                    throw new HttpRequestException($"Failed to fetch movie with ID {id}. Status Code: {response.StatusCode}");
+
+                var movieEntity = JsonSerializer.Deserialize<Movie>(content, _jsonSerializerOptions);
+
+                if (movieEntity == null)
+                    throw new InvalidOperationException("Failed to deserialize movie.");
+
+                var movieDTO = new MovieDTODetails
+                {
+                    Id = movieEntity.Id,
+                    Title = movieEntity.Title,
+                    Description = movieEntity.Description,
+                    ReleaseDate = movieEntity.ReleaseDate,
+                    Director = movieEntity.Director,
+                    ImageUrl = movieEntity.ImageUrl,
+                    BackdropUrl = movieEntity.BackdropUrl,
+                    Runtime = movieEntity.Runtime,
+                    Actors = ConvertActors(movieEntity.Actors)
+                };
+
+                return movieDTO;
             }
-
-            var movieDTO = new MovieDTODetails
+            catch (Exception ex)
             {
-                Id = movieEntity.Id,
-                Title = movieEntity.Title,
-                Description = movieEntity.Description,
-                ReleaseDate = movieEntity.ReleaseDate,
-                Director = movieEntity.Director,
-                ImageUrl = movieEntity.ImageUrl,
-                BackdropUrl = movieEntity.BackdropUrl,
-                Actors = ConvertActors(movieEntity.Actors)
-            };
-
-            return movieDTO;
+                throw new ApplicationException($"Error fetching movie by ID {id}: {ex.Message}", ex);
+            }
         }
 
         public List<ActorDTO> ConvertActors(ICollection<Actor> actorDTOs)
         {
             if (actorDTOs == null)
-            {
                 return new List<ActorDTO>();
-            }
 
             return actorDTOs.Select(actorDTO => new ActorDTO
             {
@@ -95,55 +127,39 @@ namespace DAL.API.Repositories
 
         public async Task<PaginatedList<MovieDTO>> GetMovies(int pageNumber, int pageSize, string? searchQuery, string? genre)
         {
-            var queryString = $"?pageNumber={pageNumber}&pageSize={pageSize}";
-
-            if (!string.IsNullOrWhiteSpace(searchQuery))
-            {
-                queryString += $"&searchQuery={Uri.EscapeDataString(searchQuery)}";
-            }
-
-            if (!string.IsNullOrWhiteSpace(genre))
-            {
-                queryString += $"&genre={Uri.EscapeDataString(genre)}";
-            }
-
+            var queryString = BuildQueryString(pageNumber, pageSize, searchQuery, genre);
             Uri url = new Uri(_apiBaseUrl + "/Movie" + queryString);
 
-            var response = await _client.GetAsync(url);
-
-            if (!response.IsSuccessStatusCode)
+            try
             {
-                throw new HttpRequestException($"Failed to fetch movies. Status Code: {response.StatusCode}");
+                var response = await _client.GetAsync(url).ConfigureAwait(false);
+
+                if (!response.IsSuccessStatusCode)
+                    throw new HttpRequestException($"Failed to fetch movies. Status Code: {response.StatusCode}");
+
+                var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                var paginatedList = JsonSerializer.Deserialize<PaginatedList<Movie>>(content, _jsonSerializerOptions);
+
+                if (paginatedList == null)
+                    throw new InvalidOperationException("Failed to deserialize paginated list.");
+
+                paginatedList.Items ??= new List<Movie>();
+
+                var movieDTOs = paginatedList.Items.Select(movieEntity => new MovieDTO
+                {
+                    Id = movieEntity.Id,
+                    Title = movieEntity.Title,
+                    ReleaseDate = movieEntity.ReleaseDate,
+                    Director = movieEntity.Director,
+                    ImageUrl = movieEntity.ImageUrl
+                }).ToList();
+
+                return new PaginatedList<MovieDTO>(movieDTOs, paginatedList.TotalCount, paginatedList.PageNumber, paginatedList.PageSize);
             }
-
-            var content = await response.Content.ReadAsStringAsync();
-            Console.WriteLine("Response Content: " + content);
-
-            var paginatedList = JsonSerializer.Deserialize<PaginatedList<Movie>>(content, new JsonSerializerOptions
+            catch (Exception ex)
             {
-                PropertyNameCaseInsensitive = true 
-            });
-
-            if (paginatedList == null)
-            {
-                throw new InvalidOperationException("Failed to deserialize paginated list.");
+                throw new ApplicationException($"Error fetching movies: {ex.Message}", ex);
             }
-
-            paginatedList.Items ??= new List<Movie>();
-
-            var movieDTOs = paginatedList.Items.Select(movieEntity => new MovieDTO
-            {
-                Id = movieEntity.Id,
-                Title = movieEntity.Title,
-                ReleaseDate = movieEntity.ReleaseDate,
-                Director = movieEntity.Director,
-                ImageUrl = movieEntity.ImageUrl
-            }).ToList();
-
-            return new PaginatedList<MovieDTO>(movieDTOs, paginatedList.TotalCount, paginatedList.PageNumber, paginatedList.PageSize);
         }
-
-
-
     }
 }

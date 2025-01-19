@@ -16,20 +16,6 @@ namespace BLL.Services
         {
             _showRepository = showRepository;
         }
-
-        public async Task<List<ShowDTO>> GetRecentShows()
-        {
-
-            var showDTOs = await _showRepository.GetRecentShows();
-
-            if(showDTOs == null)
-            {
-                return null;
-            }
-
-            return showDTOs;
-        }
-
         public async Task<ShowDTO> GetShowById(int id)
         {
             var showDTO = await _showRepository.GetShowById(id);
