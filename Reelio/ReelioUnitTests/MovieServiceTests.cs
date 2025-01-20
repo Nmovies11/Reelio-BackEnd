@@ -9,6 +9,7 @@ using BLL.Services;
 using Common.DTO;
 using Common.Entities;
 using DAL.API.Entities;
+using BLL.Interfaces.Services;
 
 
 namespace ReelioUnitTests
@@ -16,74 +17,95 @@ namespace ReelioUnitTests
     [TestClass]
     public class MovieServiceTests
     {
-        private Mock<IMovieRepository> _mockRepository;
-        private MovieService _movieService;
+        private Mock<IMovieRepository> _mockMovieRepository;
+        private IMovieService _movieService;
 
         [TestInitialize]
-        public void TestInitialize()
+        public void SetUp()
         {
-            _mockRepository = new Mock<IMovieRepository>();
-            _movieService = new MovieService(_mockRepository.Object);
+            // Initialize the mock repository
+            _mockMovieRepository = new Mock<IMovieRepository>();
+
+            // Inject the mock repository into the MovieService
+            _movieService = new MovieService(_mockMovieRepository.Object);
         }
 
         [TestMethod]
-        public async Task GetRecentMovie_ShouldReturnRecentMovies()
+        public async Task GetRecentMovies_ShouldReturnListOfMovieDTOs()
         {
             // Arrange
-            var mockMovies = new List<MovieDTO>
+            var expectedMovies = new List<MovieDTO>
             {
-                new MovieDTO { Id = 1, Title = "Movie 1", ReleaseDate = DateOnly.FromDateTime(DateTime.Now), Director = "Director 1", ImageUrl = "url1" },
-                new MovieDTO { Id = 2, Title = "Movie 2", ReleaseDate = DateOnly.FromDateTime(DateTime.Now), Director = "Director 2", ImageUrl = "url2" }
+                new MovieDTO { Id = 1, Title = "Movie 1", Genre = "Action" },
+                new MovieDTO { Id = 2, Title = "Movie 2", Genre = "Drama" }
             };
 
-            _mockRepository
-                .Setup(repo => repo.GetRecentMovies())
-                .ReturnsAsync(mockMovies);
+            _mockMovieRepository.Setup(repo => repo.GetRecentMovies()).ReturnsAsync(expectedMovies);
 
             // Act
             var result = await _movieService.GetRecentMovies();
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(2, result.Count);
-            Assert.AreEqual("Movie 1", result[0].Title);
+            Assert.AreEqual(expectedMovies.Count, result.Count);
+            Assert.AreEqual(expectedMovies[0].Title, result[0].Title);
         }
 
         [TestMethod]
-        public async Task GetMovieById_ShouldReturnMovieDetails()
+        public async Task GetMovieById_ShouldReturnMovieDTODetails()
         {
             // Arrange
-            var mockMovie = new MovieDTODetails
+            var movieId = 1;
+            var expectedMovieDetails = new MovieDTODetails
             {
                 Id = 1,
                 Title = "Movie 1",
-                Description = "A great movie",
-                ReleaseDate = DateOnly.FromDateTime(DateTime.Now),
-                Director = "Director 1",
-                ImageUrl = "url1",
-                BackdropUrl = "backdrop1",
-                Actors = new List<ActorDTO>
-                {
-                    new ActorDTO { Id = 1, Name = "Actor 1", Role = "Role 1", ImageUrl = "actorUrl1" },
-                    new ActorDTO { Id = 2, Name = "Actor 2", Role = "Role 2", ImageUrl = "actorUrl2" }
-                }
+                Genre = "Action",
+                Description = "An exciting action movie"
             };
 
-            _mockRepository
-                .Setup(repo => repo.GetMovieById(1))
-                .ReturnsAsync(mockMovie);
+            _mockMovieRepository.Setup(repo => repo.GetMovieById(movieId)).ReturnsAsync(expectedMovieDetails);
 
             // Act
-            var result = await _movieService.GetMovieById(1);
+            var result = await _movieService.GetMovieById(movieId);
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.Id);
-            Assert.AreEqual("Movie 1", result.Title);
-            Assert.AreEqual(2, result.Actors.Count);
+            Assert.AreEqual(expectedMovieDetails.Title, result.Title);
+            Assert.AreEqual(expectedMovieDetails.Description, result.Description);
         }
 
+        [TestMethod]
+        public async Task GetMovies_ShouldReturnPaginatedListOfMovies()
+        {
+            // Arrange
+            int pageNumber = 1;
+            int pageSize = 10;
+            string searchQuery = "Action";
+            string genre = "Action";
 
+            var expectedMovies = new PaginatedList<MovieDTO>(
+                new List<MovieDTO>
+                {
+                    new MovieDTO { Id = 1, Title = "Test Show 1" },
+                    new MovieDTO { Id = 2, Title = "Test Show 2" }
+                },
+                totalCount: 2,
+                pageNumber: pageNumber,
+                pageSize: pageSize
+            );
+
+            _mockMovieRepository.Setup(repo => repo.GetMovies(pageNumber, pageSize, searchQuery, genre))
+                .ReturnsAsync(expectedMovies);
+
+            // Act
+            var result = await _movieService.GetMovies(pageNumber, pageSize, searchQuery, genre);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(expectedMovies.Items.Count, result.Items.Count);
+            Assert.AreEqual(expectedMovies.TotalCount, result.TotalCount);
+        }
     }
-
 }
+

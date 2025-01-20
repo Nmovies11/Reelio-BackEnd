@@ -5,104 +5,111 @@ using DAL.API.Entities;
 using BLL.Interfaces.Repositories;
 using BLL.Services;
 using Common.DTO;
+using BLL.Interfaces.Services;
 
-namespace ShowServiceTests
+namespace ReelioUnitTests
 {
     [TestClass]
     public class ShowServiceTests
     {
-        private Mock<IShowRepository> _mockRepository;
-        private ShowService _showService;
+        private Mock<IShowRepository> _mockShowRepository;
+        private IShowService _showService;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _mockRepository = new Mock<IShowRepository>();
-            _showService = new ShowService(_mockRepository.Object);
+            _mockShowRepository = new Mock<IShowRepository>();
+            _showService = new ShowService(_mockShowRepository.Object);
         }
 
         [TestMethod]
-        public async Task GetRecentShows_ShouldReturnRecentShows()
+        public async Task GetShowById_ShouldReturnShow_WhenShowExists()
         {
             // Arrange
-            var mockShows = new List<ShowDTO>
-            {
-                new ShowDTO { Id = 1, Title = "Show 1", Description = "Description 1", ReleaseDate = DateOnly.FromDateTime(DateTime.Now), ImageUrl = "url1", BackdropUrl = "backdrop1" },
-                new ShowDTO { Id = 2, Title = "Show 2", Description = "Description 2", ReleaseDate = DateOnly.FromDateTime(DateTime.Now), ImageUrl = "url2", BackdropUrl = "backdrop2" }
-            };
-
-            _mockRepository
-                .Setup(repo => repo.GetRecentShows())
-                .ReturnsAsync(mockShows);
+            var showId = 1;
+            var expectedShow = new ShowDTO { Id = showId, Title = "Test Show" };
+            _mockShowRepository.Setup(repo => repo.GetShowById(showId))
+                .ReturnsAsync(expectedShow);
 
             // Act
-            var result = await _showService.GetRecentShows();
+            var result = await _showService.GetShowById(showId);
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(2, result.Count);
-            Assert.AreEqual("Show 1", result[0].Title);
-            Assert.AreEqual("Description 1", result[0].Description);
+            Assert.AreEqual(expectedShow.Id, result.Id);
+            Assert.AreEqual(expectedShow.Title, result.Title);
+            _mockShowRepository.Verify(repo => repo.GetShowById(showId), Times.Once);
         }
 
         [TestMethod]
-        public async Task GetShowById_ShouldReturnShowDetailsWithSeasonsAndEpisodes()
+        public async Task GetShowById_ShouldReturnNull_WhenShowDoesNotExist()
         {
             // Arrange
-            var mockShow = new ShowDTO
-            {
-                Id = 1,
-                Title = "Show 1",
-                Description = "A great show",
-                ReleaseDate = DateOnly.FromDateTime(DateTime.Now),
-                ImageUrl = "url1",
-                BackdropUrl = "backdrop1",
-                Seasons = new List<SeasonDTO>
-                {
-                    new SeasonDTO
-                    {
-                        Id = 1,
-                        SeasonNumber = 1,
-                        Description = "Season 1 Description",
-                        ReleaseDate = DateOnly.FromDateTime(DateTime.Now).AddYears(-1),
-                        ShowId = 1,
-                        Episodes = new List<EpisodeDTO>
-                        {
-                            new EpisodeDTO { Id = 1, Title = "Episode 1", Description = "Episode 1 Description", ReleaseDate = DateOnly.FromDateTime(DateTime.Now).AddMonths(-12), Director = "Director 1", EpisodeNumber = 1 },
-                            new EpisodeDTO { Id = 2, Title = "Episode 2", Description = "Episode 2 Description", ReleaseDate = DateOnly.FromDateTime(DateTime.Now).AddMonths(-11), Director = "Director 2", EpisodeNumber = 2 }
-                        }
-                    }
-                }
-            };
-
-            _mockRepository
-                .Setup(repo => repo.GetShowById(1))
-                .ReturnsAsync(mockShow);
-
-            // Act
-            var result = await _showService.GetShowById(1);
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.Id);
-            Assert.AreEqual("Show 1", result.Title);
-            Assert.AreEqual(1, result.Seasons.Count);
-
-        }
-
-        [TestMethod]
-        public async Task GetShowById_ShouldReturnNullWhenShowNotFound()
-        {
-            // Arrange
-            _mockRepository
-                .Setup(repo => repo.GetShowById(It.IsAny<int>()))
+            var showId = 1;
+            _mockShowRepository.Setup(repo => repo.GetShowById(showId))
                 .ReturnsAsync((ShowDTO)null);
 
             // Act
-            var result = await _showService.GetShowById(999); // Passing non-existent ID
+            var result = await _showService.GetShowById(showId);
 
             // Assert
             Assert.IsNull(result);
+            _mockShowRepository.Verify(repo => repo.GetShowById(showId), Times.Once);
+        }
+
+        [TestMethod]
+        public async Task GetShows_ShouldReturnPaginatedList_WhenShowsExist()
+        {
+            // Arrange
+            var pageNumber = 1;
+            var pageSize = 10;
+            var searchQuery = "Test";
+            var genre = "Comedy";
+
+            var expectedShows = new PaginatedList<ShowDTO>(
+                new List<ShowDTO>
+                {
+                    new ShowDTO { Id = 1, Title = "Test Show 1" },
+                    new ShowDTO { Id = 2, Title = "Test Show 2" }
+                },
+                totalCount: 2,
+                pageNumber: pageNumber,
+                pageSize: pageSize
+            );
+
+
+            _mockShowRepository.Setup(repo => repo.GetShows(pageNumber, pageSize, searchQuery, genre))
+                .ReturnsAsync(expectedShows);
+
+            // Act
+            var result = await _showService.GetShows(pageNumber, pageSize, searchQuery, genre);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(2, result.Items.Count);
+            Assert.AreEqual(pageNumber, result.PageNumber);
+            Assert.AreEqual(pageSize, result.PageSize);
+            _mockShowRepository.Verify(repo => repo.GetShows(pageNumber, pageSize, searchQuery, genre), Times.Once);
+        }
+
+        [TestMethod]
+        public async Task GetShows_ShouldReturnNull_WhenNoShowsExist()
+        {
+            // Arrange
+            var pageNumber = 1;
+            var pageSize = 10;
+            var searchQuery = "Test";
+            var genre = "Comedy";
+
+            _mockShowRepository.Setup(repo => repo.GetShows(pageNumber, pageSize, searchQuery, genre))
+                .ReturnsAsync((PaginatedList<ShowDTO>)null);
+
+            // Act
+            var result = await _showService.GetShows(pageNumber, pageSize, searchQuery, genre);
+
+            // Assert
+            Assert.IsNull(result);
+            _mockShowRepository.Verify(repo => repo.GetShows(pageNumber, pageSize, searchQuery, genre), Times.Once);
         }
     }
 
